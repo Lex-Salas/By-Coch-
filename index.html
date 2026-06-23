@@ -276,6 +276,37 @@
   }
 
   :focus-visible{outline:2px solid var(--rust); outline-offset:3px;}
+
+  /* ---------- LIGHTBOX ---------- */
+  .card{cursor:zoom-in;}
+
+  .lightbox{
+    position:fixed; inset:0; z-index:1000;
+    background:rgba(21,20,15,0.92);
+    display:flex; align-items:center; justify-content:center;
+    padding:5vw;
+    opacity:0; visibility:hidden;
+    transition:opacity 0.3s ease;
+  }
+  .lightbox.active{opacity:1; visibility:visible;}
+
+  .lightbox img{
+    width:auto; height:auto;
+    max-width:90vw; max-height:85vh;
+    object-fit:contain;
+    box-shadow:0 30px 60px rgba(0,0,0,0.4);
+  }
+
+  .lightbox-close{
+    position:absolute; top:24px; right:5vw;
+    background:none; border:none;
+    color:var(--cream);
+    font-size:2rem;
+    line-height:1;
+    cursor:pointer;
+    font-family:'Inter', sans-serif;
+  }
+  .lightbox-close:hover{color:var(--rust);}
 </style>
 </head>
 <body>
@@ -382,6 +413,35 @@
   </div>
   <div class="footer-bottom">© 2026 BY COCHÉ — Tus prendas y hogar, con estilo.</div>
 </footer>
+
+<div class="lightbox" id="lightbox">
+  <button class="lightbox-close" aria-label="Cerrar imagen" onclick="closeLightbox()">×</button>
+  <img id="lightbox-img" src="" alt="">
+</div>
+
+<script>
+  document.querySelectorAll('.card img').forEach(img => {
+    img.addEventListener('click', () => {
+      const lb = document.getElementById('lightbox');
+      const lbImg = document.getElementById('lightbox-img');
+      lbImg.src = img.src;
+      lbImg.alt = img.alt;
+      lb.classList.add('active');
+    });
+  });
+
+  function closeLightbox(){
+    document.getElementById('lightbox').classList.remove('active');
+  }
+
+  document.getElementById('lightbox').addEventListener('click', (e) => {
+    if(e.target.id === 'lightbox') closeLightbox();
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if(e.key === 'Escape') closeLightbox();
+  });
+</script>
 
 </body>
 </html>

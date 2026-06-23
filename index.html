@@ -1,127 +1,386 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>BY COCHÉ | Moda • Estilo • Calidad</title>
-
-<link rel="stylesheet" href="css/style.css">
+<title>BY COCHÉ | Moda Masculina & Hogar</title>
 <link rel="manifest" href="manifest.json">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#15140f;
+    --cream:#f3efe6;
+    --sand:#dcd0b8;
+    --rust:#a8462f;
+    --rust-dark:#7e3220;
+    --line: rgba(21,20,15,0.12);
+  }
 
+  *{margin:0;padding:0;box-sizing:border-box;}
+
+  html{scroll-behavior:smooth;}
+
+  body{
+    background:var(--cream);
+    color:var(--ink);
+    font-family:'Inter', sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  h1,h2,h3{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    letter-spacing:-0.01em;
+  }
+
+  a{color:inherit; text-decoration:none;}
+  img{display:block; width:100%; height:100%; object-fit:cover;}
+
+  /* ---------- NAVBAR ---------- */
+  .navbar{
+    position:fixed; top:0; left:0; right:0; z-index:100;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:22px 5vw;
+    background:rgba(243,239,230,0.85);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+
+  .logo{
+    font-family:'Fraunces', serif;
+    font-size:1.4rem;
+    font-weight:600;
+    letter-spacing:0.04em;
+  }
+
+  nav{display:flex; gap:36px;}
+
+  nav a{
+    font-size:0.82rem;
+    text-transform:uppercase;
+    letter-spacing:0.12em;
+    font-weight:600;
+    position:relative;
+    padding-bottom:4px;
+  }
+
+  nav a::after{
+    content:'';
+    position:absolute; left:0; bottom:0;
+    width:0; height:1px; background:var(--rust);
+    transition:width 0.3s ease;
+  }
+
+  nav a:hover::after{width:100%;}
+
+  .nav-toggle{display:none; flex-direction:column; gap:5px; cursor:pointer; background:none; border:none;}
+  .nav-toggle span{width:24px; height:2px; background:var(--ink);}
+
+  /* ---------- HERO ---------- */
+  .hero{
+    position:relative;
+    height:100vh;
+    min-height:560px;
+    display:grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    overflow:hidden;
+  }
+
+  .hero-image{position:relative; overflow:hidden;}
+  .hero-image img{filter:saturate(0.92) contrast(1.05);}
+  .hero-image::after{
+    content:'';
+    position:absolute; inset:0;
+    background:linear-gradient(180deg, rgba(21,20,15,0.05), rgba(21,20,15,0.55));
+  }
+
+  .hero-copy{
+    display:flex; flex-direction:column; justify-content:center;
+    padding:0 6vw;
+    background:var(--ink);
+    color:var(--cream);
+    position:relative;
+  }
+
+  .hero-eyebrow{
+    font-size:0.78rem;
+    letter-spacing:0.22em;
+    text-transform:uppercase;
+    color:var(--sand);
+    margin-bottom:22px;
+  }
+
+  .hero-copy h1{
+    font-size:clamp(2.6rem, 6vw, 4.6rem);
+    line-height:1.02;
+    margin-bottom:24px;
+  }
+
+  .hero-copy h1 em{color:var(--rust); font-style:normal;}
+
+  .hero-copy p{
+    max-width:380px;
+    font-size:1.02rem;
+    line-height:1.6;
+    color:rgba(243,239,230,0.78);
+    margin-bottom:38px;
+  }
+
+  .btn{
+    display:inline-flex; align-items:center; gap:10px;
+    background:var(--rust);
+    color:var(--cream);
+    padding:16px 30px;
+    font-size:0.85rem;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    font-weight:600;
+    width:fit-content;
+    transition:background 0.25s ease, transform 0.25s ease;
+  }
+  .btn:hover{background:var(--rust-dark); transform:translateY(-2px);}
+
+  /* ---------- SECTION SHELL ---------- */
+  .section{
+    padding:120px 5vw;
+    max-width:1400px;
+    margin:0 auto;
+  }
+
+  .section.dark{
+    background:var(--ink);
+    color:var(--cream);
+    max-width:100%;
+  }
+  .section.dark > *{max-width:1400px; margin-left:auto; margin-right:auto;}
+
+  .section-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-end;
+    margin-bottom:56px;
+    border-bottom:1px solid var(--line);
+    padding-bottom:28px;
+    gap:24px;
+    flex-wrap:wrap;
+  }
+
+  .section.dark .section-head{border-bottom-color:rgba(243,239,230,0.18);}
+
+  .eyebrow{
+    font-size:0.78rem;
+    letter-spacing:0.2em;
+    text-transform:uppercase;
+    color:var(--rust);
+    margin-bottom:10px;
+    display:block;
+  }
+
+  .section-head h2{font-size:clamp(2rem, 4vw, 2.8rem);}
+
+  .section-head p{
+    max-width:320px;
+    font-size:0.95rem;
+    line-height:1.55;
+    opacity:0.72;
+  }
+
+  /* ---------- CARDS ---------- */
+  .cards{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:28px;
+  }
+
+  .card{
+    position:relative;
+    aspect-ratio:3/4;
+    overflow:hidden;
+    background:var(--sand);
+  }
+
+  .card img{
+    transition:transform 0.6s cubic-bezier(.2,.8,.2,1);
+  }
+  .card:hover img{transform:scale(1.06);}
+
+  .card .tag{
+    position:absolute; inset:auto 0 0 0;
+    padding:22px 20px;
+    background:linear-gradient(180deg, transparent, rgba(0,0,0,0.7));
+  }
+
+  .card h3{
+    color:#fff;
+    font-size:1.2rem;
+    font-weight:500;
+  }
+
+  /* ---------- FOOTER ---------- */
+  footer{
+    background:var(--ink);
+    color:var(--cream);
+    padding:70px 5vw 40px;
+  }
+
+  .footer-grid{
+    max-width:1400px;
+    margin:0 auto;
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    flex-wrap:wrap;
+    gap:36px;
+    border-bottom:1px solid rgba(243,239,230,0.15);
+    padding-bottom:40px;
+  }
+
+  footer h3{font-size:1.6rem;}
+  footer .tagline{opacity:0.6; font-size:0.9rem; margin-top:8px;}
+
+  .footer-contact{display:flex; flex-direction:column; gap:8px; align-items:flex-end; text-align:right;}
+  .footer-contact a{font-size:0.95rem;}
+  .footer-contact a:hover{color:var(--rust);}
+
+  .footer-bottom{
+    max-width:1400px;
+    margin:0 auto;
+    padding-top:24px;
+    font-size:0.78rem;
+    opacity:0.5;
+    letter-spacing:0.05em;
+  }
+
+  /* ---------- RESPONSIVE ---------- */
+  @media (max-width: 900px){
+    .hero{grid-template-columns:1fr; height:auto;}
+    .hero-image{height:46vh;}
+    .hero-copy{padding:60px 7vw;}
+    .cards{grid-template-columns:repeat(2, 1fr);}
+    nav{display:none;}
+    .nav-toggle{display:flex;}
+    .section{padding:80px 6vw;}
+  }
+
+  @media (max-width: 560px){
+    .cards{grid-template-columns:1fr;}
+    .footer-grid{flex-direction:column;}
+    .footer-contact{align-items:flex-start; text-align:left;}
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{transition:none !important;}
+    html{scroll-behavior:auto;}
+  }
+
+  :focus-visible{outline:2px solid var(--rust); outline-offset:3px;}
+</style>
 </head>
-
 <body>
 
 <header class="navbar">
-
-<div class="logo">
-BY COCHÉ
-</div>
-
-<nav>
-<a href="#moda">Moda</a>
-<a href="#anime">Anime</a>
-<a href="#hogar">Hogar</a>
-<a href="#contacto">Contacto</a>
-</nav>
-
+  <div class="logo">BY COCHÉ</div>
+  <nav>
+    <a href="#moda">Moda</a>
+    <a href="#anime">Colección Japón</a>
+    <a href="#hogar">Hogar</a>
+    <a href="#contacto">Contacto</a>
+  </nav>
+  <button class="nav-toggle" aria-label="Abrir menú" onclick="document.querySelector('nav').style.display = document.querySelector('nav').style.display==='flex' ? 'none' : 'flex'; document.querySelector('nav').style.cssText='display:flex; flex-direction:column; gap:18px; position:fixed; top:74px; right:5vw; background:#15140f; padding:24px 28px;'">
+    <span></span><span></span><span></span>
+  </button>
 </header>
 
 <section class="hero">
-
-<img src="images/Seleccion De Japon.JPG" alt="Colección Japón">
-
-<div class="overlay">
-
-<h1>BY COCHÉ</h1>
-
-<p>
-Moda Masculina • Hogar • Colecciones Exclusivas
-</p>
-
-<a href="https://wa.me/50661909815" class="btn">
-Comprar por WhatsApp
-</a>
-
-</div>
-
+  <div class="hero-image">
+    <img src="images/Seleccion De Japon.JPG" alt="Colección Japón">
+  </div>
+  <div class="hero-copy">
+    <span class="hero-eyebrow">Tienda online • Costa Rica</span>
+    <h1>Estilo <em>masculino</em>,<br>hecho para durar.</h1>
+    <p>Camisas, polos y prendas técnicas seleccionadas con cuidado, más una línea de hogar pensada para el descanso. Calidad real, sin vueltas.</p>
+    <a href="https://wa.me/50661909815" class="btn">Comprar por WhatsApp →</a>
+  </div>
 </section>
 
 <section id="moda" class="section">
-
-<h2>Moda Masculina</h2>
-
-<div class="cards">
-
-<div class="card">
-<img src="images/Camisas columbia.JPG">
-<h3>Camisas Columbia</h3>
-</div>
-
-<div class="card">
-<img src="images/Camisa Tipo Polo.JPG">
-<h3>Polos Premium</h3>
-</div>
-
-<div class="card">
-<img src="images/Camisetas Dry-Fit Columbia.JPG">
-<h3>Dry Fit Columbia</h3>
-</div>
-
-</div>
-
+  <div class="section-head">
+    <div>
+      <span class="eyebrow">01 — Moda</span>
+      <h2>Moda Masculina</h2>
+    </div>
+    <p>Camisas y prendas técnicas para el día a día, seleccionadas por durabilidad y corte.</p>
+  </div>
+  <div class="cards">
+    <div class="card">
+      <img src="images/Camisas columbia.JPG" alt="Camisas Columbia">
+      <div class="tag"><h3>Camisas Columbia</h3></div>
+    </div>
+    <div class="card">
+      <img src="images/Camisa Tipo Polo.JPG" alt="Polos Premium">
+      <div class="tag"><h3>Polos Premium</h3></div>
+    </div>
+    <div class="card">
+      <img src="images/Camisetas Dry-Fit Columbia.JPG" alt="Dry Fit Columbia">
+      <div class="tag"><h3>Dry Fit Columbia</h3></div>
+    </div>
+  </div>
 </section>
 
 <section id="anime" class="section dark">
-
-<h2>Anime Collection</h2>
-
-<div class="cards">
-
-<div class="card">
-<img src="images/Seleccion De Japon.JPG">
-<h3>Colección Japón</h3>
-</div>
-
-</div>
-
+  <div class="section-head">
+    <div>
+      <span class="eyebrow">02 — Edición limitada</span>
+      <h2>Colección Japón</h2>
+    </div>
+    <p>Piezas inspiradas en el anime y la cultura japonesa, en tirajes reducidos.</p>
+  </div>
+  <div class="cards">
+    <div class="card">
+      <img src="images/Seleccion De Japon.JPG" alt="Colección Japón">
+      <div class="tag"><h3>Colección Japón</h3></div>
+    </div>
+  </div>
 </section>
 
 <section id="hogar" class="section">
-
-<h2>Hogar</h2>
-
-<div class="cards">
-
-<div class="card">
-<img src="images/Edredones King.jpg">
-<h3>Edredones King</h3>
-</div>
-
-<div class="card">
-<img src="images/Edredon Borrego.JPG">
-<h3>Edredón Borrego</h3>
-</div>
-
-<div class="card">
-<img src="images/Cobija Borrego Algodon.JPG">
-<h3>Cobijas Premium</h3>
-</div>
-
-</div>
-
+  <div class="section-head">
+    <div>
+      <span class="eyebrow">03 — Hogar</span>
+      <h2>Hogar & Descanso</h2>
+    </div>
+    <p>Edredones y cobijas pensados para las noches frescas, en texturas premium.</p>
+  </div>
+  <div class="cards">
+    <div class="card">
+      <img src="images/Edredones King.jpg" alt="Edredones King">
+      <div class="tag"><h3>Edredones King</h3></div>
+    </div>
+    <div class="card">
+      <img src="images/Edredon Borrego.JPG" alt="Edredón Borrego">
+      <div class="tag"><h3>Edredón Borrego</h3></div>
+    </div>
+    <div class="card">
+      <img src="images/Cobija Borrego Algodon.JPG" alt="Cobijas Premium">
+      <div class="tag"><h3>Cobijas Premium</h3></div>
+    </div>
+  </div>
 </section>
 
 <footer id="contacto">
-
-<h3>BY COCHÉ</h3>
-
-<p>WhatsApp: 6190-9815</p>
-
-<p>Moda • Estilo • Calidad</p>
-
+  <div class="footer-grid">
+    <div>
+      <h3>BY COCHÉ</h3>
+      <p class="tagline">Moda Masculina • Hogar • Colecciones Exclusivas</p>
+    </div>
+    <div class="footer-contact">
+      <a href="https://wa.me/50661909815">WhatsApp: 6190-9815</a>
+      <a href="#moda">Ver catálogo</a>
+    </div>
+  </div>
+  <div class="footer-bottom">© 2026 BY COCHÉ — Tus prendas y hogar, con estilo.</div>
 </footer>
 
 </body>

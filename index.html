@@ -9,7 +9,6 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/index.min.js"></script>
 <style>
   :root{
     --ink:#15140f;
@@ -717,14 +716,8 @@
 </footer>
 
 <script>
-  // Inicializar EmailJS
-  emailjs.init("1bVC4pXy92YX3zdxA");
-
   let cart = [];
   const SHIPPING = 8000;
-  const SERVICEID = "servicio_pglzsyv";
-  const TEMPLATEID = "template_orden";
-  const RECIPIENT_EMAIL = "asalasgonza@icloud.com";
 
   // LIGHTBOX
   function openLightbox(el){
@@ -859,40 +852,65 @@
     const subtotal = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
     const finalTotal = subtotal + SHIPPING;
 
-    // Generar orden
-    const orderData = {
-      name, phone, email, address,
-      items: cart.map(i => `${i.name} x${i.qty} = ₡${(i.price * i.qty).toLocaleString('es-CR')}`).join('\n'),
-      subtotal: `₡${subtotal.toLocaleString('es-CR')}`,
-      shipping: '₡8.000',
-      total: `₡${finalTotal.toLocaleString('es-CR')}`
-    };
+    // Cerrar checkout y mostrar Simple Móvil
+    closeCheckout();
+    document.getElementById('simple-amount').innerText = `₡${finalTotal.toLocaleString('es-CR')}`;
+    document.getElementById('simple-modal').classList.add('active');
 
-    // Enviar por EmailJS
-    emailjs.send(SERVICEID, "template_bycoches_orden", {
-      to_email: RECIPIENT_EMAIL,
-      client_name: name,
-      client_phone: phone,
-      client_email: email,
-      client_address: address,
-      items: orderData.items,
-      subtotal: orderData.subtotal,
-      shipping: '₡8.000',
-      total: orderData.total
-    }).then(() => {
-      closeCheckout();
-      document.getElementById('simple-amount').innerText = `₡${finalTotal.toLocaleString('es-CR')}`;
-      document.getElementById('simple-modal').classList.add('active');
-    }).catch(err => {
-      console.error("Error al enviar email:", err);
-      alert('Error al procesar tu compra. Intenta nuevamente.');
-    });
+    // Guardar datos para enviar luego
+    window.currentOrder = {
+      name, phone, email, address,
+      items: cart,
+      subtotal,
+      finalTotal
+    };
   }
 
   function closeSimple(){
     document.getElementById('simple-modal').classList.remove('active');
+    
+    // Enviar orden por email si existe
+    if(window.currentOrder){
+      const order = window.currentOrder;
+      
+      // Cargar EmailJS dinámicamente
+      if(!window.emailjs){
+        const script = document.createElement('script');
+        script.src = 'https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/index.min.js';
+        script.onload = () => {
+          window.emailjs.init("1bVC4pXy92YX3zdxA");
+          sendOrder(order);
+        };
+        document.head.appendChild(script);
+      } else {
+        sendOrder(order);
+      }
+    }
+    
     cart = [];
     updateCart();
+  }
+
+  function sendOrder(order){
+    const itemsText = order.items.map(i => `${i.name} x${i.qty} = ₡${(i.price * i.qty).toLocaleString('es-CR')}`).join('\n');
+    
+    if(window.emailjs){
+      window.emailjs.send("servicio_pglzsyv", "template_bycoches_orden", {
+        to_email: "asalasgonza@icloud.com",
+        client_name: order.name,
+        client_phone: order.phone,
+        client_email: order.email,
+        client_address: order.address,
+        items: itemsText,
+        subtotal: `₡${order.subtotal.toLocaleString('es-CR')}`,
+        shipping: '₡8.000',
+        total: `₡${order.finalTotal.toLocaleString('es-CR')}`
+      }).then(() => {
+        console.log("Orden enviada por email");
+      }).catch(err => {
+        console.error("Error al enviar email:", err);
+      });
+    }
   }
 </script>
 

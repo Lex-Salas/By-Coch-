@@ -363,6 +363,43 @@
     font-size:0.95rem;
   }
 
+  /* BOTONES TALLA Y COLOR */
+  .size-btn, .color-btn{
+    background:var(--sand);
+    border:2px solid var(--line);
+    padding:10px 16px;
+    border-radius:4px;
+    cursor:pointer;
+    font-weight:500;
+    font-size:0.9rem;
+    transition:all 0.25s ease;
+  }
+
+  .size-btn:hover, .color-btn:hover{
+    border-color:var(--rust);
+  }
+
+  .size-btn.active, .color-btn.active{
+    background:var(--rust);
+    color:var(--cream);
+    border-color:var(--rust);
+  }
+
+  .color-btn{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:6px;
+    padding:10px;
+  }
+
+  .color-dot{
+    width:16px;
+    height:16px;
+    border-radius:50%;
+    border:2px solid rgba(0,0,0,0.2);
+  }
+
   /* MODAL SIMPLE MOVIL */
   .simple-modal{
     background:var(--cream);
@@ -533,7 +570,7 @@
         <h3>Camisas Columbia</h3>
         <p>₡10.000</p>
       </div>
-      <button class="card-add" onclick="event.stopPropagation(); addToCart('Camisas Columbia', 10000)">+</button>
+      <button class="card-add" onclick="event.stopPropagation(); addToCart('Camisas Columbia', 10000, true)">+</button>
     </div>
     <div class="card" onclick="openLightbox(this)">
       <img src="images/Camisa Tipo Polo.JPG" alt="Polos Premium">
@@ -541,7 +578,7 @@
         <h3>Polos Premium</h3>
         <p>₡6.000</p>
       </div>
-      <button class="card-add" onclick="event.stopPropagation(); addToCart('Polos Premium', 6000)">+</button>
+      <button class="card-add" onclick="event.stopPropagation(); addToCart('Polos Premium', 6000, true)">+</button>
     </div>
     <div class="card" onclick="openLightbox(this)">
       <img src="images/Camisetas Dry-Fit Columbia.JPG" alt="Dry Fit Columbia">
@@ -549,7 +586,7 @@
         <h3>Dry Fit Columbia</h3>
         <p>₡4.000</p>
       </div>
-      <button class="card-add" onclick="event.stopPropagation(); addToCart('Dry Fit Columbia', 4000)">+</button>
+      <button class="card-add" onclick="event.stopPropagation(); addToCart('Dry Fit Columbia', 4000, true)">+</button>
     </div>
   </div>
 </section>
@@ -568,7 +605,7 @@
         <h3>Colección Japón</h3>
         <p>₡10.000</p>
       </div>
-      <button class="card-add" onclick="event.stopPropagation(); addToCart('Colección Japón', 10000)">+</button>
+      <button class="card-add" onclick="event.stopPropagation(); addToCart('Colección Japón', 10000, true)">+</button>
     </div>
   </div>
 </section>
@@ -587,7 +624,7 @@
         <h3>Edredones King</h3>
         <p>₡24.000</p>
       </div>
-      <button class="card-add" onclick="event.stopPropagation(); addToCart('Edredones King', 24000)">+</button>
+      <button class="card-add" onclick="event.stopPropagation(); addToCart('Edredones King', 24000, false)">+</button>
     </div>
     <div class="card" onclick="openLightbox(this)">
       <img src="images/Edredon Borrego.JPG" alt="Edredón Borrego">
@@ -595,7 +632,7 @@
         <h3>Edredón Borrego</h3>
         <p>₡28.000</p>
       </div>
-      <button class="card-add" onclick="event.stopPropagation(); addToCart('Edredón Borrego', 28000)">+</button>
+      <button class="card-add" onclick="event.stopPropagation(); addToCart('Edredón Borrego', 28000, false)">+</button>
     </div>
     <div class="card" onclick="openLightbox(this)">
       <img src="images/Cobija Borrego Algodon.JPG" alt="Cobijas Premium">
@@ -603,7 +640,7 @@
         <h3>Cobijas Premium</h3>
         <p>₡16.000</p>
       </div>
-      <button class="card-add" onclick="event.stopPropagation(); addToCart('Cobijas Premium', 16000)">+</button>
+      <button class="card-add" onclick="event.stopPropagation(); addToCart('Cobijas Premium', 16000, false)">+</button>
     </div>
   </div>
 </section>
@@ -613,6 +650,26 @@
 </a>
 
 <!-- LIGHTBOX -->
+<!-- MODAL SELECCIONAR TALLA Y COLOR -->
+<div class="modal" id="size-color-modal">
+  <div class="modal-content" style="max-width:450px;">
+    <button class="modal-close" onclick="closeSizeColor()">×</button>
+    <h2 style="margin-bottom:30px;" id="size-color-title">Selecciona opciones</h2>
+    
+    <div class="form-group">
+      <label id="size-label">Talla *</label>
+      <div id="size-options" style="display:grid; grid-template-columns:repeat(4,1fr); gap:10px;"></div>
+    </div>
+
+    <div class="form-group">
+      <label id="color-label">Color *</label>
+      <div id="color-options" style="display:grid; grid-template-columns:repeat(3,1fr); gap:10px;"></div>
+    </div>
+
+    <button class="btn" style="width:100%; margin-top:20px;" onclick="confirmSizeColor()">Agregar al carrito</button>
+  </div>
+</div>
+
 <div class="lightbox" id="lightbox">
   <button class="lightbox-close" aria-label="Cerrar" onclick="closeLightbox()">×</button>
   <img id="lightbox-img" src="" alt="">
@@ -678,15 +735,15 @@
 <!-- MODAL SIMPLE MOVIL -->
 <div class="modal" id="simple-modal">
   <div class="simple-modal">
-    <h2>Instrucciones de pago Sinpe Móvil</h2>
-    <p style="margin:20px 0; opacity:0.8;">Transfiere el monto a través de Sinpe Móvil al siguiente número:</p>
+    <h2>Instrucciones de pago SINPE Móvil</h2>
+    <p style="margin:20px 0; opacity:0.8;">Transfiere el monto a través de SINPE Móvil al siguiente número:</p>
     
     <div class="simple-code" id="simple-code">6190-9815</div>
 
     <div class="simple-instructions">
       <p><strong>Pasos:</strong></p>
       <ol>
-        <li>Abre la app Sinpe Móvil en tu teléfono</li>
+        <li>Abre la app SINPE Móvil en tu teléfono</li>
         <li>Selecciona "Transferencias"</li>
         <li>Ingresa el número <strong>6190-9815</strong></li>
         <li>Ingresa el monto: <span id="simple-amount">₡0</span></li>
@@ -695,7 +752,7 @@
       </ol>
     </div>
 
-    <p style="font-size:0.9rem; opacity:0.7; margin:20px 0;">Una vez confirmemos tu pago por Sinpe Móvil, te enviaremos la factura y coordinaremos el envío con Correos de Costa Rica.</p>
+    <p style="font-size:0.9rem; opacity:0.7; margin:20px 0;">Una vez confirmemos tu pago por SINPE Móvil, te enviaremos la factura y coordinaremos el envío con Correos de Costa Rica.</p>
 
     <button class="btn" style="width:100%; margin-top:20px;" onclick="closeSimple()">Entendido</button>
   </div>
@@ -744,15 +801,98 @@
   });
 
   // CARRITO
-  function addToCart(name, price){
-    const existing = cart.find(i => i.name === name);
+  function addToCart(name, price, isRopa = true){
+    window.currentProduct = {name, price, isRopa};
+    openSizeColorModal(name, isRopa);
+  }
+
+  function openSizeColorModal(productName, isRopa){
+    const modal = document.getElementById('size-color-modal');
+    const sizeLabel = document.getElementById('size-label');
+    const sizeOptions = document.getElementById('size-options');
+    const colorOptions = document.getElementById('color-options');
+    const title = document.getElementById('size-color-title');
+
+    title.innerText = productName;
+
+    // Definir opciones según si es ropa o edredón
+    const sizes = isRopa ? ['S', 'M', 'L', 'XL'] : ['Individual', 'Matrimonial', 'Queen Size', 'King Size'];
+    const colors = ['Negro', 'Gris', 'Rojo', 'Azul', 'Blanco', 'Celeste', 'Rosado', 'Verde', 'Turquesa', 'Naranja', 'Amarillo'];
+    const colorMap = {
+      'Negro': '#1a1a1a',
+      'Gris': '#888888',
+      'Rojo': '#d32f2f',
+      'Azul': '#1976d2',
+      'Blanco': '#ffffff',
+      'Celeste': '#87ceeb',
+      'Rosado': '#ff69b4',
+      'Verde': '#388e3c',
+      'Turquesa': '#00bcd4',
+      'Naranja': '#ff9800',
+      'Amarillo': '#fdd835'
+    };
+
+    sizeLabel.innerText = isRopa ? 'Talla *' : 'Tamaño *';
+
+    // Renderizar botones de talla
+    sizeOptions.innerHTML = sizes.map(size => 
+      `<button class="size-btn" onclick="selectSize('${size}')" id="size-${size}">${size}</button>`
+    ).join('');
+
+    // Renderizar botones de color
+    colorOptions.innerHTML = colors.map(color => 
+      `<button class="color-btn" onclick="selectColor('${color}')" id="color-${color}">
+        <div class="color-dot" style="background:${colorMap[color]}; border-color:#333;"></div>
+        <span>${color}</span>
+      </button>`
+    ).join('');
+
+    window.selectedSize = '';
+    window.selectedColor = '';
+
+    modal.classList.add('active');
+  }
+
+  function selectSize(size){
+    document.querySelectorAll('.size-btn').forEach(btn => btn.classList.remove('active'));
+    document.getElementById(`size-${size}`).classList.add('active');
+    window.selectedSize = size;
+  }
+
+  function selectColor(color){
+    document.querySelectorAll('.color-btn').forEach(btn => btn.classList.remove('active'));
+    document.getElementById(`color-${color}`).classList.add('active');
+    window.selectedColor = color;
+  }
+
+  function confirmSizeColor(){
+    if(!window.selectedSize || !window.selectedColor){
+      alert('Por favor selecciona talla y color');
+      return;
+    }
+
+    const {name, price} = window.currentProduct;
+    const existing = cart.find(i => i.name === name && i.size === window.selectedSize && i.color === window.selectedColor);
+    
     if(existing){
       existing.qty++;
     } else {
-      cart.push({name, price, qty: 1, size: ''});
+      cart.push({
+        name, 
+        price, 
+        qty: 1, 
+        size: window.selectedSize,
+        color: window.selectedColor
+      });
     }
+
+    closeSizeColor();
     updateCart();
     openCart();
+  }
+
+  function closeSizeColor(){
+    document.getElementById('size-color-modal').classList.remove('active');
   }
 
   function removeFromCart(idx){
@@ -790,6 +930,7 @@
         <div class="cart-item-info">
           <h4>${item.name}</h4>
           <p>₡${item.price.toLocaleString('es-CR')}</p>
+          <p style="font-size:0.8rem; opacity:0.6; margin-top:4px;">${item.size}${item.color ? ' - ' + item.color : ''}</p>
           <button class="cart-item-remove" onclick="removeFromCart(${i})">Quitar</button>
         </div>
         <div class="cart-item-qty">

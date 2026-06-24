@@ -671,22 +671,22 @@
       <input type="text" id="client-address" placeholder="Calle, número, apartado...">
     </div>
 
-    <button class="btn" style="width:100%;" onclick="processPay()">Ir a Simple Móvil</button>
+    <button class="btn" style="width:100%;" onclick="processPay()">Ir a Sinpe Móvil</button>
   </div>
 </div>
 
 <!-- MODAL SIMPLE MOVIL -->
 <div class="modal" id="simple-modal">
   <div class="simple-modal">
-    <h2>Instrucciones de pago</h2>
-    <p style="margin:20px 0; opacity:0.8;">Transfiere el monto a través de Simple Móvil al siguiente número:</p>
+    <h2>Instrucciones de pago Sinpe Móvil</h2>
+    <p style="margin:20px 0; opacity:0.8;">Transfiere el monto a través de Sinpe Móvil al siguiente número:</p>
     
     <div class="simple-code" id="simple-code">6190-9815</div>
 
     <div class="simple-instructions">
       <p><strong>Pasos:</strong></p>
       <ol>
-        <li>Abre la app Simple Móvil en tu teléfono</li>
+        <li>Abre la app Sinpe Móvil en tu teléfono</li>
         <li>Selecciona "Transferencias"</li>
         <li>Ingresa el número <strong>6190-9815</strong></li>
         <li>Ingresa el monto: <span id="simple-amount">₡0</span></li>
@@ -695,7 +695,7 @@
       </ol>
     </div>
 
-    <p style="font-size:0.9rem; opacity:0.7; margin:20px 0;">Una vez confirmemos tu pago, te enviaremos la factura y coordinaremos el envío con Correos de Costa Rica.</p>
+    <p style="font-size:0.9rem; opacity:0.7; margin:20px 0;">Una vez confirmemos tu pago por Sinpe Móvil, te enviaremos la factura y coordinaremos el envío con Correos de Costa Rica.</p>
 
     <button class="btn" style="width:100%; margin-top:20px;" onclick="closeSimple()">Entendido</button>
   </div>
@@ -852,7 +852,7 @@
     const subtotal = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
     const finalTotal = subtotal + SHIPPING;
 
-    // Cerrar checkout y mostrar Sinpe Móvil
+    // Cerrar checkout y mostrar Simple Móvil
     closeCheckout();
     document.getElementById('simple-amount').innerText = `₡${finalTotal.toLocaleString('es-CR')}`;
     document.getElementById('simple-modal').classList.add('active');

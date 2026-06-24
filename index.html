@@ -671,7 +671,7 @@
       <input type="text" id="client-address" placeholder="Calle, número, apartado...">
     </div>
 
-    <button class="btn" style="width:100%;" onclick="processPay()">Ir a Sinpe Móvil</button>
+    <button class="btn" style="width:100%;" onclick="processPay()">Ir a SINPE Móvil</button>
   </div>
 </div>
 
@@ -869,22 +869,29 @@
   function closeSimple(){
     document.getElementById('simple-modal').classList.remove('active');
     
-    // Enviar orden por email si existe
+    // Preparar mensaje de WhatsApp
     if(window.currentOrder){
       const order = window.currentOrder;
       
-      // Cargar EmailJS dinámicamente
-      if(!window.emailjs){
-        const script = document.createElement('script');
-        script.src = 'https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/index.min.js';
-        script.onload = () => {
-          window.emailjs.init("1bVC4pXy92YX3zdxA");
-          sendOrder(order);
-        };
-        document.head.appendChild(script);
-      } else {
+      const itemsMsg = order.items
+        .map(i => `${i.name} x${i.qty} = ₡${(i.price * i.qty).toLocaleString('es-CR')}`)
+        .join('%0A');
+      
+      const message = `Hola, confirmo mi compra en BY COCHÉ:%0A%0A🛍️ *Productos:*%0A${itemsMsg}%0A%0A📦 *Subtotal:* ₡${order.subtotal.toLocaleString('es-CR')}%0A🚚 *Envío:* ₡8.000%0A💰 *TOTAL:* ₡${order.finalTotal.toLocaleString('es-CR')}%0A%0A📍 *Dirección:* ${order.address}%0A📞 *Teléfono:* ${order.phone}%0A📧 *Correo:* ${order.email}`;
+      
+      // Enviar por email
+      const script = document.createElement('script');
+      script.src = 'https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/index.min.js';
+      script.onload = () => {
+        window.emailjs.init("1bVC4pXy92YX3zdxA");
         sendOrder(order);
-      }
+      };
+      document.head.appendChild(script);
+      
+      // Abrir WhatsApp después de 1 segundo
+      setTimeout(() => {
+        window.open(`https://wa.me/50661909815?text=${message}`, '_blank');
+      }, 1000);
     }
     
     cart = [];

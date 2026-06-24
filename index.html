@@ -852,7 +852,7 @@
     const subtotal = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
     const finalTotal = subtotal + SHIPPING;
 
-    // Cerrar checkout y mostrar Simple Móvil
+    // Cerrar checkout y mostrar Sinpe Móvil
     closeCheckout();
     document.getElementById('simple-amount').innerText = `₡${finalTotal.toLocaleString('es-CR')}`;
     document.getElementById('simple-modal').classList.add('active');

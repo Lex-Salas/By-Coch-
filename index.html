@@ -1039,7 +1039,6 @@
     updateCart();
   }
 
-<script>
   function sendOrder(order){
     const itemsText = order.items.map(i => `${i.name} x${i.qty} = ₡${(i.price * i.qty).toLocaleString('es-CR')}`).join('\n');
     

@@ -563,7 +563,7 @@
       <h2>Moda Masculina</h2>
     </div>
   </div>
-  <div class="cards">
+  <div class="cards" id="cards-moda">
     <div class="card" onclick="openLightbox(this)">
       <img src="images/Camisas columbia.JPG" alt="Camisas Columbia">
       <div class="tag">
@@ -598,7 +598,7 @@
       <h2>Colección Japón</h2>
     </div>
   </div>
-  <div class="cards">
+  <div class="cards" id="cards-anime">
     <div class="card" onclick="openLightbox(this)">
       <img src="images/Seleccion De Japon.JPG" alt="Colección Japón">
       <div class="tag">
@@ -617,7 +617,7 @@
       <h2>Hogar & Descanso</h2>
     </div>
   </div>
-  <div class="cards">
+  <div class="cards" id="cards-hogar">
     <div class="card" onclick="openLightbox(this)">
       <img src="images/Edredones King.jpg" alt="Edredones King">
       <div class="tag">
@@ -1039,6 +1039,7 @@
     updateCart();
   }
 
+<script>
   function sendOrder(order){
     const itemsText = order.items.map(i => `${i.name} x${i.qty} = ₡${(i.price * i.qty).toLocaleString('es-CR')}`).join('\n');
     
@@ -1060,6 +1061,61 @@
       });
     }
   }
+
+  // ============ CONEXIÓN CON BACKEND (Firebase vía bycoches-api) ============
+  // 👉 Si el backend cambia de dominio/puerto, actualiza esta línea:
+  const API_URL = "http://85.208.20.101:5000/api/products";
+
+  function formatPriceCRC(n){
+    return '₡' + Number(n || 0).toLocaleString('es-CR');
+  }
+
+  function buildCardHTML(p){
+    const img = p.imagen || 'images/logo.PNG';
+    const isRopa = p.categoria !== 'hogar';
+    const nombre = (p.nombre || '').replace(/'/g, "\\'");
+    return `
+      <div class="card" onclick="openLightbox(this)">
+        <img src="${img}" alt="${p.nombre || ''}">
+        <div class="tag">
+          <h3>${p.nombre || 'Producto'}</h3>
+          <p>${formatPriceCRC(p.precio)}</p>
+        </div>
+        <button class="card-add" onclick="event.stopPropagation(); addToCart('${nombre}', ${Number(p.precio) || 0}, ${isRopa})">+</button>
+      </div>
+    `;
+  }
+
+  async function loadProductsFromAPI(){
+    try {
+      const res = await fetch(API_URL);
+      if(!res.ok) throw new Error('Respuesta no válida del servidor');
+      const products = await res.json();
+
+      if(!Array.isArray(products) || products.length === 0){
+        console.log('No hay productos en Firebase todavía — se mantienen los productos de muestra.');
+        return;
+      }
+
+      const grouped = { moda: [], anime: [], hogar: [] };
+      products.forEach(p => {
+        const cat = ['moda','anime','hogar'].includes(p.categoria) ? p.categoria : 'moda';
+        grouped[cat].push(p);
+      });
+
+      ['moda','anime','hogar'].forEach(cat => {
+        if(grouped[cat].length > 0){
+          const container = document.getElementById('cards-' + cat);
+          if(container) container.innerHTML = grouped[cat].map(buildCardHTML).join('');
+        }
+      });
+
+    } catch(err){
+      console.error('No se pudieron cargar productos desde la API, se mantienen los productos de muestra:', err);
+    }
+  }
+
+  loadProductsFromAPI();
 </script>
 
 </body>

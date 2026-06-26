@@ -3,450 +3,510 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BY COCHÉ — Panel Admin</title>
+<title>BY COCHÉ — Panel de Administración</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-  :root{
-    --ink:#1B1B1B;
-    --bone:#F3ECE2;
-    --clay:#C97B5F;
-    --sage:#8A9A82;
-    --gold:#C9A66B;
-    --line: rgba(27,27,27,0.12);
-    --danger:#B5483D;
+  :root {
+    --bg-main: #0f172a;
+    --bg-card: #1e293b;
+    --bg-input: #334155;
+    --text-main: #f8fafc;
+    --text-muted: #94a3b8;
+    --accent: #3b82f6;
+    --accent-hover: #2563eb;
+    --success: #10b981;
+    --danger: #ef4444;
+    --border: rgba(255, 255, 255, 0.08);
   }
-  *{box-sizing:border-box;}
-  body{
-    margin:0;
-    background:var(--bone);
-    color:var(--ink);
-    font-family:'Inter',sans-serif;
-  }
-  a{color:inherit;}
 
-  /* ---------- LOGIN ---------- */
-  #login-screen{
-    min-height:100vh;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    padding:20px;
+  * { box-sizing: border-box; }
+  
+  body {
+    margin: 0;
+    background-color: var(--bg-main);
+    color: var(--text-main);
+    font-family: 'Inter', sans-serif;
+    -webkit-font-smoothing: antialiased;
   }
-  .login-box{
-    background:#fff;
-    border:1px solid var(--line);
-    padding:48px 40px;
-    width:100%;
-    max-width:380px;
-    text-align:center;
-  }
-  .login-box .logo{
-    font-family:'Fraunces',serif;
-    font-size:28px;
-    margin-bottom:6px;
-  }
-  .login-box .logo em{color:var(--clay); font-style:italic; font-weight:400;}
-  .login-box p{font-size:13px; opacity:0.6; margin-bottom:28px;}
-  .login-box input{
-    width:100%;
-    padding:13px 14px;
-    border:1px solid var(--line);
-    font-size:14px;
-    margin-bottom:14px;
-    font-family:'Inter',sans-serif;
-  }
-  .login-box button{
-    width:100%;
-    padding:13px;
-    background:var(--ink);
-    color:var(--bone);
-    border:none;
-    font-size:13px;
-    letter-spacing:1px;
-    text-transform:uppercase;
-    cursor:pointer;
-    transition:background .2s;
-  }
-  .login-box button:hover{background:var(--clay);}
-  .login-error{color:var(--danger); font-size:12px; margin-top:10px; min-height:16px;}
 
-  /* ---------- ADMIN APP ---------- */
-  #admin-app{display:none;}
-  header{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    padding:22px 5vw;
-    border-bottom:1px solid var(--line);
-    background:#fff;
+  /* ---------- PANTALLA DE LOGIN ---------- */
+  #login-screen {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    background: radial-gradient(circle at top, #1e1b4b 0%, #0f172a 100%);
   }
-  header .logo{font-family:'Fraunces',serif; font-size:22px;}
-  header .logo em{color:var(--clay); font-style:italic; font-weight:400;}
-  header .actions{display:flex; gap:12px; align-items:center;}
-  .btn{
-    padding:10px 18px;
-    font-size:12px;
-    letter-spacing:0.5px;
-    text-transform:uppercase;
-    border:1px solid var(--ink);
-    background:transparent;
-    color:var(--ink);
-    cursor:pointer;
-    transition:.2s;
-    border-radius:2px;
-  }
-  .btn:hover{background:var(--ink); color:var(--bone);}
-  .btn-primary{background:var(--ink); color:var(--bone);}
-  .btn-primary:hover{background:var(--clay); border-color:var(--clay);}
-  .btn-danger{border-color:var(--danger); color:var(--danger);}
-  .btn-danger:hover{background:var(--danger); color:#fff;}
 
-  main{padding:36px 5vw 80px;}
+  .login-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    padding: 40px;
+    border-radius: 16px;
+    width: 100%;
+    max-width: 420px;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3), 0 8px 10px -6px rgba(0, 0, 0, 0.3);
+    text-align: center;
+  }
 
-  .toolbar{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    margin-bottom:24px;
-    flex-wrap:wrap;
-    gap:12px;
+  .login-card h1 {
+    font-size: 28px;
+    font-weight: 700;
+    margin: 0 0 8px 0;
+    letter-spacing: -0.5px;
   }
-  .toolbar h1{font-family:'Fraunces',serif; font-weight:500; font-size:26px; margin:0;}
-  .toolbar .status{font-size:12px; opacity:0.55;}
 
-  table{
-    width:100%;
-    border-collapse:collapse;
-    background:#fff;
-    border:1px solid var(--line);
+  .login-card p {
+    color: var(--text-muted);
+    font-size: 14px;
+    margin: 0 0 32px 0;
   }
-  th, td{
-    padding:14px 16px;
-    text-align:left;
-    font-size:13px;
-    border-bottom:1px solid var(--line);
+
+  /* ---------- LAYOUT PRINCIPAL ---------- */
+  #admin-panel {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 24px;
   }
-  th{
-    text-transform:uppercase;
-    letter-spacing:0.5px;
-    font-size:11px;
-    opacity:0.55;
-    background:#FBF8F4;
+
+  .header-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 40px;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 20px;
   }
-  td.actions-cell{display:flex; gap:8px;}
-  .mini-btn{
-    font-size:11px;
-    padding:6px 10px;
-    border:1px solid var(--line);
-    background:transparent;
-    cursor:pointer;
-    border-radius:2px;
-    transition:.2s;
+
+  .header-actions h2 {
+    font-size: 24px;
+    font-weight: 700;
+    margin: 0;
+    letter-spacing: -0.5px;
   }
-  .mini-btn:hover{background:var(--ink); color:var(--bone); border-color:var(--ink);}
-  .mini-btn.danger:hover{background:var(--danger); border-color:var(--danger);}
-  .thumb{
-    width:42px; height:42px;
-    object-fit:cover;
-    background:var(--sage);
-    border-radius:2px;
+
+  /* ---------- COMPONENTES DE CONTROL ---------- */
+  .btn {
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 10px 20px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
   }
-  .cat-tag{
-    font-size:10px;
-    text-transform:uppercase;
-    letter-spacing:0.5px;
-    padding:3px 8px;
-    border-radius:2px;
-    background:var(--bone);
-    border:1px solid var(--line);
+
+  .btn-primary {
+    background-color: var(--accent);
+    color: #fff;
   }
-  .empty-row td{text-align:center; opacity:0.5; padding:40px;}
+
+  .btn-primary:hover {
+    background-color: var(--accent-hover);
+  }
+
+  .btn-secondary {
+    background-color: transparent;
+    color: var(--text-main);
+    border: 1px solid var(--border);
+  }
+
+  .btn-secondary:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+  }
+
+  .btn-danger {
+    background-color: rgba(239, 68, 68, 0.15);
+    color: #f87171;
+  }
+
+  .btn-danger:hover {
+    background-color: var(--danger);
+    color: #fff;
+  }
+
+  /* ---------- FORMULARIOS E INPUTS ---------- */
+  .form-group {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  label {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  input, select, textarea {
+    font-family: inherit;
+    background-color: var(--bg-input);
+    border: 1px solid var(--border);
+    color: var(--text-main);
+    padding: 12px 14px;
+    border-radius: 8px;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s ease;
+    width: 100%;
+  }
+
+  input:focus, select:focus, textarea:focus {
+    border-color: var(--accent);
+  }
+
+  /* ---------- TABLA DE PRODUCTOS ---------- */
+  .table-container {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    font-size: 14px;
+  }
+
+  th {
+    background-color: rgba(0, 0, 0, 0.2);
+    color: var(--text-muted);
+    font-weight: 600;
+    padding: 16px;
+    border-bottom: 1px solid var(--border);
+    text-transform: uppercase;
+    font-size: 12px;
+    letter-spacing: 0.5px;
+  }
+
+  td {
+    padding: 16px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: middle;
+  }
+
+  tr:last-child td {
+    border-bottom: none;
+  }
+
+  tr:hover td {
+    background-color: rgba(255, 255, 255, 0.02);
+  }
+
+  .img-preview {
+    width: 48px;
+    height: 48px;
+    object-fit: cover;
+    border-radius: 6px;
+    background-color: var(--bg-input);
+    border: 1px solid var(--border);
+  }
+
+  .badge {
+    display: inline-flex;
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 500;
+    text-transform: capitalize;
+    background-color: rgba(255, 255, 255, 0.08);
+  }
+
+  .action-buttons {
+    display: flex;
+    gap: 8px;
+  }
 
   /* ---------- MODAL ---------- */
-  .modal-overlay{
-    display:none;
-    position:fixed; inset:0;
-    background:rgba(27,27,27,0.5);
-    align-items:center;
-    justify-content:center;
-    padding:20px;
-    z-index:50;
+  .modal-overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: rgba(15, 23, 42, 0.8);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.2s ease;
+    padding: 20px;
   }
-  .modal-overlay.open{display:flex;}
-  .modal{
-    background:#fff;
-    width:100%;
-    max-width:460px;
-    padding:32px;
-  }
-  .modal h2{font-family:'Fraunces',serif; font-weight:500; font-size:22px; margin:0 0 22px;}
-  .field{margin-bottom:16px;}
-  .field label{
-    display:block;
-    font-size:11px;
-    text-transform:uppercase;
-    letter-spacing:0.5px;
-    opacity:0.6;
-    margin-bottom:6px;
-  }
-  .field input, .field select, .field textarea{
-    width:100%;
-    padding:11px 12px;
-    border:1px solid var(--line);
-    font-size:14px;
-    font-family:'Inter',sans-serif;
-  }
-  .field textarea{resize:vertical; min-height:60px;}
-  .modal-actions{display:flex; gap:10px; margin-top:24px;}
-  .modal-actions .btn{flex:1; text-align:center;}
-  .modal-msg{font-size:12px; margin-top:10px; min-height:16px;}
-  .modal-msg.error{color:var(--danger);}
-  .modal-msg.ok{color:var(--sage);}
 
-  @media (max-width:720px){
-    table, thead, tbody, th, td, tr{display:block;}
-    thead{display:none;}
-    tr{border:1px solid var(--line); margin-bottom:12px; background:#fff;}
-    td{border:none; display:flex; justify-content:space-between; gap:10px;}
-    td::before{content:attr(data-label); font-size:10px; text-transform:uppercase; opacity:0.5;}
-    td.actions-cell{justify-content:flex-end;}
+  .modal-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .modal-content {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    width: 100%;
+    max-width: 550px;
+    max-height: 90vh;
+    overflow-y: auto;
+    padding: 32px;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+    position: relative;
+  }
+
+  .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+  }
+
+  .modal-header h3 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+  }
+
+  .modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 32px;
+  }
+
+  .modal-msg {
+    font-size: 13px;
+    font-weight: 500;
+    margin-top: 12px;
+  }
+  .modal-msg.error { color: var(--danger); }
+  .modal-msg.ok { color: var(--success); }
+
+  .loading-msg {
+    text-align: center;
+    padding: 40px;
+    color: var(--text-muted);
+    font-weight: 500;
   }
 </style>
 </head>
 <body>
 
-<!-- ============ LOGIN ============ -->
 <div id="login-screen">
-  <div class="login-box">
-    <div class="logo">BY <em>COCHÉ</em></div>
-    <p>Panel administrativo</p>
-    <input type="password" id="login-password" placeholder="Contraseña" autocomplete="off">
-    <button onclick="tryLogin()">Entrar</button>
-    <div class="login-error" id="login-error"></div>
+  <div class="login-card">
+    <h1>BY COCHÉ</h1>
+    <p>Panel de Control Privado</p>
+    <div class="form-group" style="text-align: left;">
+      <label for="pass-input">Contraseña de acceso</label>
+      <input type="password" id="pass-input" placeholder="••••••••" onkeydown="if(event.key==='Enter') verifyLogin()">
+    </div>
+    <button class="btn btn-primary" onclick="verifyLogin()" style="width: 100%; justify-content: center; margin-top: 12px;">
+      Ingresar al Sistema
+    </button>
+    <div id="login-err" class="modal-msg error" style="margin-top: 16px;"></div>
   </div>
 </div>
 
-<!-- ============ ADMIN APP ============ -->
-<div id="admin-app">
-  <header>
-    <div class="logo">BY <em>COCHÉ</em> · Admin</div>
-    <div class="actions">
-      <span class="toolbar status" id="api-status"></span>
-      <button class="btn" onclick="logout()">Salir</button>
+<div id="admin-panel" style="display:none;">
+  <div class="header-actions">
+    <div>
+      <h2>Gestión de Inventario</h2>
+      <p style="color: var(--text-muted); margin: 4px 0 0 0; font-size: 14px;">Administra los artículos de tu catálogo en tiempo real.</p>
     </div>
-  </header>
+    <button class="btn btn-primary" onclick="openCreateModal()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+      Agregar Producto
+    </button>
+  </div>
 
-  <main>
-    <div class="toolbar">
-      <h1>Productos</h1>
-      <button class="btn btn-primary" onclick="openModal()">+ Nuevo producto</button>
-    </div>
-
-    <table>
+  <div class="table-container">
+    <table id="products-table">
       <thead>
         <tr>
-          <th>Img</th>
-          <th>Nombre</th>
+          <th style="width: 80px;">Imagen</th>
+          <th>Artículo</th>
           <th>Categoría</th>
           <th>Precio</th>
-          <th>Stock</th>
-          <th>Acciones</th>
+          <th style="width: 100px;">Stock</th>
+          <th style="width: 160px; text-align: right;">Acciones</th>
         </tr>
       </thead>
-      <tbody id="product-rows">
-        <tr class="empty-row"><td colspan="6">Cargando productos…</td></tr>
-      </tbody>
+      <tbody id="table-body">
+        </tbody>
     </table>
-  </main>
+    <div id="loading-placeholder" class="loading-msg">Cargando productos de la base de datos...</div>
+  </div>
 </div>
 
-<!-- ============ MODAL PRODUCTO ============ -->
-<div class="modal-overlay" id="modal-overlay">
-  <div class="modal">
-    <h2 id="modal-title">Nuevo producto</h2>
-    <input type="hidden" id="product-id">
-
-    <div class="field">
-      <label>Nombre</label>
-      <input type="text" id="f-nombre" placeholder="Camisa Columbia Azul">
+<div class="modal-overlay" id="product-modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3 id="modal-title">Editar Producto</h3>
+      <button class="btn btn-secondary" onclick="closeModal()" style="padding: 6px 10px;">✕</button>
+    </div>
+    
+    <input type="hidden" id="prod-id">
+    
+    <div class="form-group">
+      <label for="prod-nombre">Nombre del Producto *</label>
+      <input type="text" id="prod-nombre" placeholder="Ej. Sábanas de Algodón Premium">
     </div>
 
-    <div class="field">
-      <label>Precio (₡)</label>
-      <input type="number" id="f-precio" placeholder="12000">
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+      <div class="form-group">
+        <label for="prod-precio">Precio (₡) *</label>
+        <input type="number" id="prod-precio" placeholder="0">
+      </div>
+      <div class="form-group">
+        <label for="prod-stock">Unidades en Stock</label>
+        <input type="number" id="prod-stock" placeholder="0">
+      </div>
     </div>
 
-    <div class="field">
-      <label>Categoría</label>
-      <select id="f-categoria">
-        <option value="moda">Moda</option>
-        <option value="anime">Colección Japón</option>
-        <option value="hogar">Hogar</option>
+    <div class="form-group">
+      <label for="prod-categoria">Categoría del Artículo</label>
+      <select id="prod-categoria">
+        <option value="ropa-cama">Ropa de Cama</option>
+        <option value="casual">Ropa Casual</option>
+        <option value="deportiva">Ropa Deportiva</option>
+        <option value="otros">Otros Textiles</option>
       </select>
     </div>
 
-    <div class="field">
-      <label>Imagen (URL o ruta, ej: images/camisa.jpg)</label>
-      <input type="text" id="f-imagen" placeholder="images/camisa-azul.jpg">
+    <div class="form-group">
+      <label for="prod-imagen">URL de la Imagen (Enlace Directo ImgBB)</label>
+      <input type="text" id="prod-imagen" placeholder="https://i.ibb.co/.../imagen.jpg">
     </div>
 
-    <div class="field">
-      <label>Stock disponible</label>
-      <input type="number" id="f-stock" placeholder="5">
+    <div class="form-group">
+      <label for="prod-descripcion">Descripción del Artículo</label>
+      <textarea id="prod-descripcion" rows="3" placeholder="Detalles, tallas, materiales disponibles..."></textarea>
     </div>
 
-    <div class="field">
-      <label>Descripción (opcional)</label>
-      <textarea id="f-descripcion" placeholder="Detalles del producto..."></textarea>
-    </div>
+    <div id="modal-msg" class="modal-msg"></div>
 
-    <div class="modal-actions">
-      <button class="btn" onclick="closeModal()">Cancelar</button>
-      <button class="btn btn-primary" onclick="saveProduct()">Guardar</button>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeModal()">Cancelar</button>
+      <button class="btn btn-primary" onclick="saveProduct()">Guardar Cambios</button>
     </div>
-    <div class="modal-msg" id="modal-msg"></div>
   </div>
 </div>
 
 <script>
-  // 👉 Si el backend cambia de dominio/puerto, actualiza esta línea:
-  const API_URL = "https://receives-ralph-competitive-volt.trycloudflare.com/api/products";
-  const ADMIN_PASSWORD = "admin123456";
+  // Cambiar esta URL por la de tu túnel activo de Cloudflare cuando se reinicie
+  const API_URL = "https://lex-salas.github.io/By-Coch-/api/products"; 
 
-  let productsCache = [];
-
-  // ---------- LOGIN ----------
-  function tryLogin(){
-    const pass = document.getElementById('login-password').value;
-    if(pass === ADMIN_PASSWORD){
-      sessionStorage.setItem('byCocheAdminAuth', 'ok');
-      showAdmin();
+  function verifyLogin(){
+    const pass = document.getElementById('pass-input').value;
+    if(pass === "coché2024" || pass === "coché2026"){ 
+      document.getElementById('login-screen').style.display = 'none';
+      document.getElementById('admin-panel').style.display = 'block';
+      loadProducts();
     } else {
-      document.getElementById('login-error').textContent = 'Contraseña incorrecta';
+      document.getElementById('login-err').textContent = "Contraseña incorrecta. Inténtalo de nuevo.";
     }
-  }
-
-  document.getElementById('login-password').addEventListener('keydown', e => {
-    if(e.key === 'Enter') tryLogin();
-  });
-
-  function logout(){
-    sessionStorage.removeItem('byCocheAdminAuth');
-    document.getElementById('admin-app').style.display = 'none';
-    document.getElementById('login-screen').style.display = 'flex';
-    document.getElementById('login-password').value = '';
-  }
-
-  function showAdmin(){
-    document.getElementById('login-screen').style.display = 'none';
-    document.getElementById('admin-app').style.display = 'block';
-    loadProducts();
-  }
-
-  if(sessionStorage.getItem('byCocheAdminAuth') === 'ok'){
-    showAdmin();
-  }
-
-  // ---------- CARGAR PRODUCTOS ----------
-  const categoryLabels = { moda: 'Moda', anime: 'Colección Japón', hogar: 'Hogar' };
-
-  function formatPriceCRC(n){
-    return '₡' + Number(n || 0).toLocaleString('es-CR');
   }
 
   async function loadProducts(){
-    const statusEl = document.getElementById('api-status');
-    const rowsEl = document.getElementById('product-rows');
-    statusEl.textContent = 'Cargando...';
-    try{
+    const tbody = document.getElementById('table-body');
+    const placeholder = document.getElementById('loading-placeholder');
+    try {
       const res = await fetch(API_URL);
-      if(!res.ok) throw new Error('Respuesta no válida');
-      productsCache = await res.json();
-      renderRows();
-      statusEl.textContent = `${productsCache.length} producto${productsCache.length !== 1 ? 's' : ''} · conectado`;
-    }catch(err){
+      if(!res.ok) throw new Error('No se pudo mapear la respuesta');
+      const products = await res.json();
+      
+      tbody.innerHTML = '';
+      placeholder.style.display = 'none';
+
+      if(products.length === 0){
+        tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; color:var(--text-muted); padding:32px;">No hay productos registrados en el inventario.</td></tr>`;
+        return;
+      }
+
+      products.forEach(p => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td><img src="${p.imagen || 'https://via.placeholder.com/150'}" class="img-preview" alt=""></td>
+          <td style="font-weight:600;">${p.nombre}</td>
+          <td><span class="badge">${p.categoria || 'Textil'}</span></td>
+          <td style="font-weight:600; color:var(--success)">₡${Number(p.precio).toLocaleString()}</td>
+          <td><span style="font-weight:500; color: ${p.stock > 0 ? 'var(--text-main)' : 'var(--danger)'}">${p.stock ?? 0} uds</span></td>
+          <td style="text-align: right;">
+            <div class="action-buttons" style="justify-content: flex-end;">
+              <button class="btn btn-secondary" style="padding: 6px 12px; font-size:12px;" onclick="openEditModal('${p.id}', '${escapeHtml(p.nombre)}', ${p.precio}, '${p.categoria || ''}', '${p.imagen || ''}', '${escapeHtml(p.descripcion || '')}', ${p.stock ?? ''})">Editar</button>
+              <button class="btn btn-danger" style="padding: 6px 12px; font-size:12px;" onclick="deleteProduct('${p.id}')">Eliminar</button>
+            </div>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    } catch(err) {
       console.error(err);
-      rowsEl.innerHTML = `<tr class="empty-row"><td colspan="6">No se pudo conectar con el backend. Revisa que la API esté activa.</td></tr>`;
-      statusEl.textContent = 'Sin conexión';
+      placeholder.textContent = 'Error al conectar con el servidor backend. Revisa el túnel de Cloudflare.';
+      placeholder.className = 'loading-msg error';
     }
   }
 
-  function renderRows(){
-    const rowsEl = document.getElementById('product-rows');
-    if(!productsCache.length){
-      rowsEl.innerHTML = `<tr class="empty-row"><td colspan="6">Aún no hay productos. Crea el primero con "+ Nuevo producto".</td></tr>`;
-      return;
-    }
-    rowsEl.innerHTML = productsCache.map(p => `
-      <tr>
-        <td data-label="Img"><img class="thumb" src="${p.imagen || ''}" onerror="this.style.opacity=0"></td>
-        <td data-label="Nombre">${p.nombre || ''}</td>
-        <td data-label="Categoría"><span class="cat-tag">${categoryLabels[p.categoria] || 'Moda'}</span></td>
-        <td data-label="Precio">${formatPriceCRC(p.precio)}</td>
-        <td data-label="Stock">${p.stock !== undefined ? p.stock : '—'}</td>
-        <td data-label="Acciones" class="actions-cell">
-          <button class="mini-btn" onclick="editProduct('${p.id}')">Editar</button>
-          <button class="mini-btn danger" onclick="deleteProduct('${p.id}')">Eliminar</button>
-        </td>
-      </tr>
-    `).join('');
-  }
-
-  // ---------- MODAL ----------
-  function openModal(){
-    document.getElementById('modal-title').textContent = 'Nuevo producto';
-    document.getElementById('product-id').value = '';
-    document.getElementById('f-nombre').value = '';
-    document.getElementById('f-precio').value = '';
-    document.getElementById('f-categoria').value = 'moda';
-    document.getElementById('f-imagen').value = '';
-    document.getElementById('f-stock').value = '';
-    document.getElementById('f-descripcion').value = '';
+  function openCreateModal(){
+    document.getElementById('modal-title').textContent = 'Agregar Nuevo Artículo';
+    document.getElementById('prod-id').value = '';
+    document.getElementById('prod-nombre').value = '';
+    document.getElementById('prod-precio').value = '';
+    document.getElementById('prod-stock').value = '';
+    document.getElementById('prod-categoria').value = 'ropa-cama';
+    document.getElementById('prod-imagen').value = '';
+    document.getElementById('prod-descripcion').value = '';
     document.getElementById('modal-msg').textContent = '';
-    document.getElementById('modal-overlay').classList.add('open');
+    document.getElementById('product-modal').classList.add('active');
+  }
+
+  function openEditModal(id, nombre, precio, categoria, imagen, descripcion, stock){
+    document.getElementById('modal-title').textContent = 'Modificar Artículo';
+    document.getElementById('prod-id').value = id;
+    document.getElementById('prod-nombre').value = nombre;
+    document.getElementById('prod-precio').value = precio;
+    document.getElementById('prod-stock').value = stock !== 'undefined' ? stock : '';
+    document.getElementById('prod-categoria').value = categoria || 'ropa-cama';
+    document.getElementById('prod-imagen').value = imagen;
+    document.getElementById('prod-descripcion').value = descripcion !== 'undefined' ? descripcion : '';
+    document.getElementById('modal-msg').textContent = '';
+    document.getElementById('product-modal').classList.add('active');
   }
 
   function closeModal(){
-    document.getElementById('modal-overlay').classList.remove('open');
-  }
-
-  function editProduct(id){
-    const p = productsCache.find(x => x.id === id);
-    if(!p) return;
-    document.getElementById('modal-title').textContent = 'Editar producto';
-    document.getElementById('product-id').value = p.id;
-    document.getElementById('f-nombre').value = p.nombre || '';
-    document.getElementById('f-precio').value = p.precio || '';
-    document.getElementById('f-categoria').value = p.categoria || 'moda';
-    document.getElementById('f-imagen').value = p.imagen || '';
-    document.getElementById('f-stock').value = p.stock !== undefined ? p.stock : '';
-    document.getElementById('f-descripcion').value = p.descripcion || '';
-    document.getElementById('modal-msg').textContent = '';
-    document.getElementById('modal-overlay').classList.add('open');
+    document.getElementById('product-modal').classList.remove('active');
   }
 
   async function saveProduct(){
-    const id = document.getElementById('product-id').value;
-    const nombre = document.getElementById('f-nombre').value.trim();
-    const precio = Number(document.getElementById('f-precio').value);
-    const categoria = document.getElementById('f-categoria').value;
-    const imagen = document.getElementById('f-imagen').value.trim();
-    const stockVal = document.getElementById('f-stock').value;
-    const descripcion = document.getElementById('f-descripcion').value.trim();
+    const id = document.getElementById('prod-id').value;
+    const nombre = document.getElementById('prod-nombre').value.trim();
+    const precio = document.getElementById('prod-precio').value;
+    const stockVal = document.getElementById('prod-stock').value;
+    const categoria = document.getElementById('prod-categoria').value;
+    const imagen = document.getElementById('prod-imagen').value.trim();
+    const descripcion = document.getElementById('prod-descripcion').value.trim();
     const msgEl = document.getElementById('modal-msg');
 
     if(!nombre || !precio){
-      msgEl.textContent = 'Nombre y precio son obligatorios';
+      msgEl.textContent = 'El nombre y el precio son obligatorios';
       msgEl.className = 'modal-msg error';
       return;
     }
 
-    const payload = { nombre, precio, categoria, imagen, descripcion };
+    const payload = { nombre, precio: Number(precio), categoria, imagen, descripcion };
     if(stockVal !== '') payload.stock = Number(stockVal);
 
-    try{
-      msgEl.textContent = 'Guardando...';
+    try {
+      msgEl.textContent = 'Guardando en la base de datos...';
       msgEl.className = 'modal-msg';
 
       const url = id ? `${API_URL}/${id}` : API_URL;
@@ -458,32 +518,35 @@
         body: JSON.stringify(payload)
       });
 
-      if(!res.ok) throw new Error('Error al guardar');
+      if(!res.ok) throw new Error('Error en el guardado HTTP');
 
-      msgEl.textContent = 'Guardado ✓';
+      msgEl.textContent = '¡Cambios guardados con éxito! ✓';
       msgEl.className = 'modal-msg ok';
       await loadProducts();
-      setTimeout(closeModal, 500);
-
-    }catch(err){
+      setTimeout(closeModal, 600);
+    } catch(err) {
       console.error(err);
-      msgEl.textContent = 'No se pudo guardar. Revisa la conexión con el backend.';
+      msgEl.textContent = 'Error crítico al procesar. Verifica el estado de la API.';
       msgEl.className = 'modal-msg error';
     }
   }
 
   async function deleteProduct(id){
-    if(!confirm('¿Eliminar este producto? Esta acción no se puede deshacer.')) return;
-    try{
+    if(!confirm('¿Estás seguro de que deseas eliminar permanentemente este artículo?')) return;
+    try {
       const res = await fetch(`${API_URL}/${id}`, { method: 'DELETE' });
-      if(!res.ok) throw new Error('Error al eliminar');
+      if(!res.ok) throw new Error('Error al remover el nodo');
       await loadProducts();
-    }catch(err){
+    } catch(err) {
       console.error(err);
-      alert('No se pudo eliminar el producto. Revisa la conexión con el backend.');
+      alert('Imposible eliminar el artículo. Confirma la conexión con tu VPS.');
     }
   }
-</script>
 
+  function escapeHtml(str) {
+    if(!str) return '';
+    return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+  }
+</script>
 </body>
 </html>

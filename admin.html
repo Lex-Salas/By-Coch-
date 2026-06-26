@@ -407,7 +407,8 @@
 
   function verifyLogin(){
     const pass = document.getElementById('pass-input').value;
-    if(pass === "coché2024" || pass === "coché2026"){ 
+    // Autenticación correcta con la clave solicitada
+    if(pass === "admin123456"){ 
       document.getElementById('login-screen').style.display = 'none';
       document.getElementById('admin-panel').style.display = 'block';
       loadProducts();

@@ -1059,11 +1059,34 @@
         console.error("Error al enviar email:", err);
       });
     }
+
+    // Guardar el pedido en Firebase (colección "pedidos") para el panel admin
+    fetch(PEDIDOS_API_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        cliente: order.name,
+        telefono: order.phone,
+        email: order.email,
+        direccion: order.address,
+        items: order.items.map(i => ({ nombre: i.name, cantidad: i.qty, precio: i.price })),
+        subtotal: order.subtotal,
+        envio: 8000,
+        total: order.finalTotal,
+        metodoPago: 'SINPE Móvil',
+        estado: 'pending'
+      })
+    }).then(() => {
+      console.log('Pedido guardado en Firebase');
+    }).catch(err => {
+      console.error('No se pudo guardar el pedido en Firebase:', err);
+    });
   }
 
   // ============ CONEXIÓN CON BACKEND (Firebase vía bycoches-api) ============
   // 👉 Si el backend cambia de dominio/puerto, actualiza esta línea:
-  const API_URL = "https://receives-ralph-competitive-volt.trycloudflare.com/api/products";
+  const API_URL = "https://legislative-erik-paintball-certificate.trycloudflare.com/api/products";
+  const PEDIDOS_API_URL = "https://legislative-erik-paintball-certificate.trycloudflare.com/api/pedidos";
 
   function formatPriceCRC(n){
     return '₡' + Number(n || 0).toLocaleString('es-CR');

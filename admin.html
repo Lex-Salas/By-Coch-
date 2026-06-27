@@ -4,120 +4,132 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>BY COCHÉ — Panel Admin</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root{
-    --ink:#1B1B1B;
-    --bone:#F3ECE2;
-    --clay:#C97B5F;
-    --sage:#8A9A82;
-    --gold:#C9A66B;
-    --line: rgba(27,27,27,0.10);
-    --danger:#B5483D;
-    --panel-bg:#FBF8F4;
+    --ink:#1F2937;
+    --gray:#6B7280;
+    --bg:#F3F4F6;
+    --line:#E5E7EB;
+    --blue:#2563EB;
+    --green:#16A34A;
+    --purple:#7C3AED;
+    --red:#DC2626;
+    --yellow:#D97706;
   }
   *{box-sizing:border-box;}
-  body{
-    margin:0;
-    background:var(--panel-bg);
-    color:var(--ink);
-    font-family:'Inter',sans-serif;
-  }
+  body{ margin:0; background:var(--bg); color:var(--ink); font-family:'Inter',sans-serif; }
   a{color:inherit;}
 
-  #login-screen{
-    min-height:100vh; display:flex; align-items:center; justify-content:center;
-    padding:20px; background:var(--bone);
-  }
-  .login-box{ background:#fff; border:1px solid var(--line); padding:48px 40px; width:100%; max-width:380px; text-align:center; }
-  .login-box .logo{font-family:'Fraunces',serif; font-size:28px; margin-bottom:6px;}
-  .login-box .logo em{color:var(--clay); font-style:italic; font-weight:400;}
-  .login-box p{font-size:13px; opacity:0.6; margin-bottom:28px;}
-  .login-box input{ width:100%; padding:13px 14px; border:1px solid var(--line); font-size:14px; margin-bottom:14px; font-family:'Inter',sans-serif; }
-  .login-box button{ width:100%; padding:13px; background:var(--ink); color:var(--bone); border:none; font-size:13px; letter-spacing:1px; text-transform:uppercase; cursor:pointer; transition:background .2s; }
-  .login-box button:hover{background:var(--clay);}
-  .login-error{color:var(--danger); font-size:12px; margin-top:10px; min-height:16px;}
+  #login-screen{ min-height:100vh; display:flex; align-items:center; justify-content:center; padding:20px; background:var(--bg); }
+  .login-box{ background:#fff; border:1px solid var(--line); border-radius:12px; padding:48px 40px; width:100%; max-width:380px; text-align:center; box-shadow:0 1px 3px rgba(0,0,0,0.06);}
+  .login-box .logo{font-size:24px; font-weight:800; margin-bottom:6px;}
+  .login-box .logo span{color:var(--blue);}
+  .login-box p{font-size:13px; color:var(--gray); margin-bottom:28px;}
+  .login-box input{ width:100%; padding:13px 14px; border:1px solid var(--line); border-radius:8px; font-size:14px; margin-bottom:14px; font-family:'Inter',sans-serif; }
+  .login-box button{ width:100%; padding:13px; background:var(--blue); color:#fff; border:none; border-radius:8px; font-size:14px; font-weight:600; cursor:pointer; transition:background .2s; }
+  .login-box button:hover{background:#1D4ED8;}
+  .login-error{color:var(--red); font-size:12px; margin-top:10px; min-height:16px;}
 
   #admin-app{display:none;}
   .layout{display:flex; min-height:100vh;}
 
   .sidebar{ width:260px; background:#fff; border-right:1px solid var(--line); display:flex; flex-direction:column; padding:24px 0; flex-shrink:0; }
   .sidebar .brand{ display:flex; align-items:center; gap:10px; padding:0 22px 22px; border-bottom:1px solid var(--line); margin-bottom:18px; }
-  .brand-icon{ width:38px;height:38px;border-radius:8px; background:linear-gradient(135deg, var(--clay), var(--gold)); display:flex;align-items:center;justify-content:center; color:#fff;font-family:'Fraunces',serif;font-style:italic;font-size:18px; }
-  .brand-text .name{font-family:'Fraunces',serif; font-size:18px; line-height:1.1;}
-  .brand-text .sub{font-size:11px; opacity:0.55; text-transform:uppercase; letter-spacing:0.5px;}
+  .brand-icon{ width:38px;height:38px;border-radius:10px; background:linear-gradient(135deg, var(--blue), var(--purple)); display:flex;align-items:center;justify-content:center; color:#fff; font-size:18px; }
+  .brand-text .name{font-size:17px; font-weight:800; line-height:1.1;}
+  .brand-text .name span{color:var(--blue);}
+  .brand-text .sub{font-size:11px; color:var(--gray);}
 
-  .user-card{ margin:0 16px 20px; padding:14px; background:var(--bone); border-radius:8px; font-size:13px; }
-  .user-card .role{font-weight:600;}
-  .user-card .sub-role{font-size:11px; opacity:0.6;}
-  .status-dot{display:inline-flex; align-items:center; gap:6px; font-size:11px; color:var(--sage); margin-top:6px;}
-  .status-dot::before{content:""; width:7px;height:7px;border-radius:50%; background:var(--sage);}
+  .user-card{ margin:0 16px 20px; padding:14px; background:var(--bg); border-radius:10px; font-size:13px; }
+  .user-card .role{font-weight:700;}
+  .user-card .sub-role{font-size:11px; color:var(--gray);}
+  .status-dot{display:inline-flex; align-items:center; gap:6px; font-size:11px; color:var(--green); margin-top:6px; font-weight:600;}
+  .status-dot::before{content:""; width:7px;height:7px;border-radius:50%; background:var(--green);}
 
-  .nav-item{ display:flex; align-items:center; justify-content:space-between; padding:12px 22px; font-size:14px; cursor:pointer; border-left:3px solid transparent; transition:.15s; }
-  .nav-item:hover{background:var(--bone);}
-  .nav-item.active{ border-left-color:var(--clay); background:var(--bone); font-weight:600; }
-  .nav-badge{ background:var(--sage); color:#fff; font-size:11px; padding:1px 7px; border-radius:10px; }
+  .nav-item{ display:flex; align-items:center; justify-content:space-between; padding:12px 22px; font-size:14px; cursor:pointer; border-left:3px solid transparent; transition:.15s; color:var(--gray); font-weight:500; }
+  .nav-item:hover{background:var(--bg); color:var(--ink);}
+  .nav-item.active{ border-left-color:var(--blue); background:#EFF6FF; color:var(--blue); font-weight:700; }
+  .nav-badge{ background:var(--purple); color:#fff; font-size:11px; padding:1px 7px; border-radius:10px; }
 
   .sidebar-footer{ margin-top:auto; padding:16px 22px; border-top:1px solid var(--line); font-size:12px; }
-  .sidebar-footer .row{display:flex; justify-content:space-between; margin-bottom:4px; opacity:0.65;}
-  .logout-link{ display:block; margin-top:12px; color:var(--danger); cursor:pointer; font-weight:600; }
+  .sidebar-footer .row{display:flex; justify-content:space-between; margin-bottom:4px; color:var(--gray);}
+  .logout-link{ display:block; margin-top:12px; color:var(--red); cursor:pointer; font-weight:700; }
 
   .main{flex:1; padding:32px 40px; overflow-x:auto;}
   .main-header{ display:flex; justify-content:space-between; align-items:center; margin-bottom:28px; flex-wrap:wrap; gap:14px; }
-  .main-header h1{font-family:'Fraunces',serif; font-weight:500; font-size:28px; margin:0;}
+  .main-header h1{font-weight:800; font-size:26px; margin:0;}
   .header-actions{display:flex; gap:10px; align-items:center;}
-  .pill{ display:flex; align-items:center; gap:6px; font-size:12px; opacity:0.7; }
-  .pill .dot{width:7px;height:7px;border-radius:50%; background:var(--sage);}
+  .pill{ display:flex; align-items:center; gap:6px; font-size:12px; color:var(--gray); }
+  .pill .dot{width:7px;height:7px;border-radius:50%; background:var(--green);}
 
-  .btn{ padding:10px 18px; font-size:12px; letter-spacing:0.5px; text-transform:uppercase; border:1px solid var(--ink); background:transparent; color:var(--ink); cursor:pointer; transition:.2s; border-radius:6px; }
-  .btn:hover{background:var(--ink); color:var(--bone);}
-  .btn-primary{background:var(--ink); color:var(--bone);}
-  .btn-primary:hover{background:var(--clay); border-color:var(--clay);}
+  .btn{ padding:10px 18px; font-size:13px; font-weight:600; border:1px solid var(--line); background:#fff; color:var(--ink); cursor:pointer; transition:.2s; border-radius:8px; }
+  .btn:hover{background:var(--bg);}
+  .btn-primary{background:var(--blue); color:#fff; border-color:var(--blue);}
+  .btn-primary:hover{background:#1D4ED8;}
+  .btn-green{background:var(--green); color:#fff; border-color:var(--green);}
+  .btn-green:hover{background:#15803D;}
 
-  .stats-grid{ display:grid; grid-template-columns:repeat(auto-fit, minmax(220px,1fr)); gap:18px; margin-bottom:32px; }
-  .stat-card{ background:#fff; border:1px solid var(--line); border-top:3px solid var(--sage); border-radius:8px; padding:20px; }
-  .stat-card.accent-clay{border-top-color:var(--clay);}
-  .stat-card.accent-gold{border-top-color:var(--gold);}
-  .stat-card.accent-danger{border-top-color:var(--danger);}
-  .stat-card .label{font-size:12px; opacity:0.6; margin-bottom:6px;}
-  .stat-card .value{font-family:'Fraunces',serif; font-size:26px;}
-  .stat-card .note{font-size:11px; opacity:0.5; margin-top:4px;}
+  .stats-grid{ display:grid; grid-template-columns:repeat(auto-fit, minmax(220px,1fr)); gap:18px; margin-bottom:28px; }
+  .stat-card{ background:#fff; border:1px solid var(--line); border-left:4px solid var(--green); border-radius:10px; padding:20px; box-shadow:0 1px 2px rgba(0,0,0,0.03); }
+  .stat-card.accent-blue{border-left-color:var(--blue);}
+  .stat-card.accent-purple{border-left-color:var(--purple);}
+  .stat-card.accent-red{border-left-color:var(--red);}
+  .stat-card .top-row{display:flex; justify-content:space-between; align-items:flex-start;}
+  .stat-card .label{font-size:12px; color:var(--gray); margin-bottom:6px;}
+  .stat-card .value{font-size:24px; font-weight:800;}
+  .stat-card .note{font-size:11px; color:var(--gray); margin-top:4px;}
+  .stat-icon{font-size:20px;}
 
-  .section-card{ background:#fff; border:1px solid var(--line); border-radius:8px; padding:24px; margin-bottom:24px; }
-  .section-card h2{font-family:'Fraunces',serif; font-weight:500; font-size:19px; margin:0 0 18px;}
+  .section-card{ background:#fff; border:1px solid var(--line); border-radius:10px; padding:24px; margin-bottom:24px; box-shadow:0 1px 2px rgba(0,0,0,0.03); }
+  .section-card h2{font-weight:700; font-size:17px; margin:0 0 18px;}
 
   table{width:100%; border-collapse:collapse;}
   th, td{padding:13px 14px; text-align:left; font-size:13px; border-bottom:1px solid var(--line);}
-  th{text-transform:uppercase; letter-spacing:0.5px; font-size:10.5px; opacity:0.5;}
-  .thumb{width:38px; height:38px; object-fit:cover; border-radius:6px; background:var(--sage);}
-  .cat-tag{font-size:10px; text-transform:uppercase; padding:3px 8px; border-radius:4px; background:var(--bone); border:1px solid var(--line);}
-  .stock-low{color:var(--danger); font-weight:600;}
-  .mini-btn{ font-size:11px; padding:6px 10px; border:1px solid var(--line); background:transparent; cursor:pointer; border-radius:5px; transition:.2s; }
-  .mini-btn:hover{background:var(--ink); color:var(--bone);}
-  .mini-btn.danger:hover{background:var(--danger); border-color:var(--danger);}
-  .empty-row td{text-align:center; opacity:0.5; padding:36px;}
+  th{text-transform:uppercase; letter-spacing:0.4px; font-size:10.5px; color:var(--gray);}
+  .thumb{width:38px; height:38px; object-fit:cover; border-radius:8px; background:var(--line);}
+  .cat-tag{font-size:10.5px; font-weight:600; padding:3px 9px; border-radius:6px; background:#EFF6FF; color:var(--blue);}
+  .stock-low{color:var(--red); font-weight:700;}
+  .mini-btn{ font-size:11.5px; font-weight:600; padding:6px 11px; border:1px solid var(--line); background:#fff; cursor:pointer; border-radius:6px; transition:.2s; }
+  .mini-btn:hover{background:var(--blue); color:#fff; border-color:var(--blue);}
+  .mini-btn.danger:hover{background:var(--red); border-color:var(--red);}
+  .empty-row td{text-align:center; color:var(--gray); padding:36px;}
+
+  .status-badge{ font-size:11px; font-weight:700; padding:4px 10px; border-radius:20px; text-transform:capitalize; }
+  .status-pending{background:#FEF3C7; color:#92400E;}
+  .status-completed{background:#DCFCE7; color:#166534;}
+  .status-shipped{background:#DBEAFE; color:#1E40AF;}
+  .status-cancelled{background:#FEE2E2; color:#991B1B;}
 
   .field-grid{display:grid; grid-template-columns:1fr 1fr; gap:18px;}
-  .field label{display:block; font-size:11px; text-transform:uppercase; opacity:0.55; margin-bottom:6px;}
-  .field input, .field select, .field textarea{ width:100%; padding:11px 12px; border:1px solid var(--line); font-size:14px; font-family:'Inter',sans-serif; border-radius:6px; }
+  .field label{display:block; font-size:11.5px; font-weight:600; color:var(--gray); margin-bottom:6px;}
+  .field input, .field select, .field textarea{ width:100%; padding:11px 12px; border:1px solid var(--line); font-size:14px; font-family:'Inter',sans-serif; border-radius:8px; }
   .field textarea{resize:vertical; min-height:60px;}
 
-  .modal-overlay{ display:none; position:fixed; inset:0; background:rgba(27,27,27,0.5); align-items:center; justify-content:center; padding:20px; z-index:50; }
+  .modal-overlay{ display:none; position:fixed; inset:0; background:rgba(17,24,39,0.5); align-items:center; justify-content:center; padding:20px; z-index:50; }
   .modal-overlay.open{display:flex;}
-  .modal{background:#fff; width:100%; max-width:460px; padding:32px; border-radius:8px;}
-  .modal h2{font-family:'Fraunces',serif; font-weight:500; font-size:22px; margin:0 0 22px;}
+  .modal{background:#fff; width:100%; max-width:460px; padding:32px; border-radius:12px;}
+  .modal h2{font-weight:800; font-size:20px; margin:0 0 22px;}
   .modal .field{margin-bottom:16px;}
   .modal-actions{display:flex; gap:10px; margin-top:24px;}
   .modal-actions .btn{flex:1; text-align:center;}
   .modal-msg{font-size:12px; margin-top:10px; min-height:16px;}
-  .modal-msg.error{color:var(--danger);}
-  .modal-msg.ok{color:var(--sage);}
+  .modal-msg.error{color:var(--red);}
+  .modal-msg.ok{color:var(--green);}
 
   .panel{display:none;}
   .panel.active{display:block;}
 
-  .info-banner{ background:var(--bone); border:1px solid var(--line); border-radius:8px; padding:16px 18px; font-size:13px; line-height:1.5; opacity:0.85; }
+  .info-banner{ background:#EFF6FF; border:1px solid #BFDBFE; border-radius:10px; padding:16px 18px; font-size:13px; line-height:1.5; color:#1E3A8A; }
+  .info-banner code{background:#fff; padding:2px 6px; border-radius:4px; font-size:12px;}
+
+  .order-items{font-size:12px; color:var(--gray);}
+  .order-customer{font-weight:600;}
+  .order-customer .sub{font-size:11.5px; color:var(--gray); font-weight:400;}
+
+  select.status-select{
+    font-size:11px; font-weight:700; padding:4px 8px; border-radius:6px; border:1px solid var(--line);
+  }
 
   @media (max-width:900px){
     .sidebar{display:none;}
@@ -130,7 +142,7 @@
 
 <div id="login-screen">
   <div class="login-box">
-    <div class="logo">BY <em>COCHÉ</em></div>
+    <div class="logo">BY <span>COCHÉ</span></div>
     <p>Panel administrativo</p>
     <input type="password" id="login-password" placeholder="Contraseña" autocomplete="off">
     <button onclick="tryLogin()">Entrar</button>
@@ -143,67 +155,72 @@
 
     <aside class="sidebar">
       <div class="brand">
-        <div class="brand-icon">B</div>
+        <div class="brand-icon">🛒</div>
         <div class="brand-text">
-          <div class="name">BY Coché</div>
-          <div class="sub">Admin Panel</div>
+          <div class="name">BY <span>COCHÉ</span></div>
+          <div class="sub">Enterprise Admin</div>
         </div>
       </div>
 
       <div class="user-card">
         <div class="role">Administrador Principal</div>
-        <div class="sub-role">Acceso completo</div>
+        <div class="sub-role">Super Admin</div>
         <div class="status-dot" id="status-dot">Conectado</div>
       </div>
 
       <div class="nav-item active" data-panel="dashboard" onclick="switchPanel('dashboard')"><span>📊 Dashboard</span></div>
       <div class="nav-item" data-panel="productos" onclick="switchPanel('productos')"><span>📦 Productos</span><span class="nav-badge" id="nav-product-count">0</span></div>
-      <div class="nav-item" data-panel="pedidos" onclick="switchPanel('pedidos')"><span>🛒 Pedidos</span></div>
+      <div class="nav-item" data-panel="pedidos" onclick="switchPanel('pedidos')"><span>🛍️ Pedidos</span><span class="nav-badge" id="nav-pedidos-count">0</span></div>
       <div class="nav-item" data-panel="configuracion" onclick="switchPanel('configuracion')"><span>⚙️ Configuración</span></div>
 
       <div class="sidebar-footer">
         <div class="row"><span>Última sync:</span><span id="last-sync">—</span></div>
-        <div class="row"><span>Estado:</span><span id="sync-state" style="color:var(--sage);">—</span></div>
+        <div class="row"><span>Estado:</span><span id="sync-state" style="color:var(--green); font-weight:600;">—</span></div>
         <span class="logout-link" onclick="logout()">Cerrar sesión</span>
       </div>
     </aside>
 
     <main class="main">
 
+      <!-- DASHBOARD -->
       <div class="panel active" id="panel-dashboard">
         <div class="main-header">
-          <h1>Dashboard</h1>
+          <h1>Dashboard Enterprise</h1>
           <div class="header-actions">
             <span class="pill"><span class="dot"></span> <span id="api-status-text">Conectado</span></span>
-            <button class="btn" onclick="loadProducts()">↻ Sincronizar</button>
+            <button class="btn btn-primary" onclick="syncAll()">↻ Sincronizar</button>
           </div>
         </div>
 
         <div class="stats-grid">
-          <div class="stat-card accent-sage">
-            <div class="label">Valor del Inventario</div>
-            <div class="value" id="stat-inventory-value">₡0</div>
-            <div class="note">Suma de precio × stock</div>
+          <div class="stat-card">
+            <div class="top-row"><div><div class="label">Ingresos Totales (pedidos)</div><div class="value" id="stat-revenue">₡0</div></div><span class="stat-icon">💰</span></div>
+            <div class="note">Suma de pedidos completados/pagados</div>
           </div>
-          <div class="stat-card accent-clay">
-            <div class="label">Total Productos</div>
-            <div class="value" id="stat-total-products">0</div>
-            <div class="note">Sincronizado con Firebase</div>
+          <div class="stat-card accent-blue">
+            <div class="top-row"><div><div class="label">Total Pedidos</div><div class="value" id="stat-total-orders">0</div></div><span class="stat-icon">🛒</span></div>
+            <div class="note">Desde Firebase</div>
           </div>
-          <div class="stat-card accent-gold">
-            <div class="label">Unidades en Stock</div>
-            <div class="value" id="stat-total-stock">0</div>
-            <div class="note">Suma de todas las unidades</div>
+          <div class="stat-card accent-purple">
+            <div class="top-row"><div><div class="label">Total Productos</div><div class="value" id="stat-total-products">0</div></div><span class="stat-icon">📦</span></div>
+            <div class="note">Sincronizado</div>
           </div>
-          <div class="stat-card accent-danger">
-            <div class="label">Alertas de Stock</div>
-            <div class="value" id="stat-low-stock">0</div>
-            <div class="note">Productos con 2 unidades o menos</div>
+          <div class="stat-card accent-red">
+            <div class="top-row"><div><div class="label">Alertas Stock</div><div class="value" id="stat-low-stock">0</div></div><span class="stat-icon">⚠️</span></div>
+            <div class="note">Requieren atención</div>
           </div>
         </div>
 
         <div class="section-card">
-          <h2>Productos recientes</h2>
+          <h2>Pedidos Recientes</h2>
+          <table>
+            <thead><tr><th>Cliente</th><th>Total</th><th>Estado</th><th>Pago</th><th>Fecha</th></tr></thead>
+            <tbody id="dashboard-orders-rows"><tr class="empty-row"><td colspan="5">Cargando…</td></tr></tbody>
+          </table>
+        </div>
+
+        <div class="section-card">
+          <h2>Productos (inventario)</h2>
           <table>
             <thead><tr><th>Img</th><th>Nombre</th><th>Categoría</th><th>Precio</th><th>Stock</th></tr></thead>
             <tbody id="dashboard-recent-rows"><tr class="empty-row"><td colspan="5">Cargando…</td></tr></tbody>
@@ -211,24 +228,16 @@
         </div>
 
         <div class="section-card">
-          <h2>Estado del sistema</h2>
+          <h2>Estado del Sistema</h2>
           <div class="stats-grid">
-            <div class="stat-card accent-sage">
-              <div class="label">Backend</div>
-              <div class="value" style="font-size:16px;">Firebase Firestore</div>
-            </div>
-            <div class="stat-card accent-clay">
-              <div class="label">Conexión</div>
-              <div class="value" style="font-size:16px;">Cloudflare Tunnel (HTTPS)</div>
-            </div>
-            <div class="stat-card accent-gold">
-              <div class="label">Hosting tienda</div>
-              <div class="value" style="font-size:16px;">GitHub Pages</div>
-            </div>
+            <div class="stat-card"><div class="label">API Conectada</div><div class="value" style="font-size:15px;">Firebase Firestore</div></div>
+            <div class="stat-card accent-blue"><div class="label">Conexión Segura</div><div class="value" style="font-size:15px;">Cloudflare Tunnel (HTTPS)</div></div>
+            <div class="stat-card accent-purple"><div class="label">Hosting Tienda</div><div class="value" style="font-size:15px;">GitHub Pages</div></div>
           </div>
         </div>
       </div>
 
+      <!-- PRODUCTOS (sin cambios funcionales respecto al panel anterior) -->
       <div class="panel" id="panel-productos">
         <div class="main-header">
           <h1>Productos</h1>
@@ -242,17 +251,28 @@
         </div>
       </div>
 
+      <!-- PEDIDOS (real, desde Firestore) -->
       <div class="panel" id="panel-pedidos">
-        <div class="main-header"><h1>Pedidos</h1></div>
+        <div class="main-header">
+          <h1>Gestión de Pedidos</h1>
+          <button class="btn btn-primary" onclick="loadOrders()">↻ Sincronizar pedidos</button>
+        </div>
+        <div class="section-card">
+          <table>
+            <thead>
+              <tr><th>Cliente</th><th>Productos</th><th>Total</th><th>Estado</th><th>Pago</th><th>Fecha</th></tr>
+            </thead>
+            <tbody id="order-rows"><tr class="empty-row"><td colspan="6">Cargando pedidos…</td></tr></tbody>
+          </table>
+        </div>
         <div class="info-banner">
-          Por ahora, los pedidos de BY COCHÉ se reciben directamente por <strong>WhatsApp</strong> y <strong>correo</strong> cuando un cliente completa el checkout en la tienda — no se guardan en una base de datos todavía.
-          <br><br>
-          Si quieres ver aquí un historial real de pedidos (cliente, productos, estado, pago), se puede agregar una colección <code>pedidos</code> en Firestore y conectar el checkout de la tienda para que guarde cada orden automáticamente. Es un paso adicional al que ya tenemos — dilo y lo construimos.
+          Los pedidos se guardan automáticamente cuando un cliente completa el checkout en la tienda (antes de abrir WhatsApp). Puedes cambiar el estado de cada pedido directamente en la tabla.
         </div>
       </div>
 
+      <!-- CONFIGURACIÓN -->
       <div class="panel" id="panel-configuracion">
-        <div class="main-header"><h1>Configuración de la tienda</h1></div>
+        <div class="main-header"><h1>Configuración de la Tienda</h1></div>
         <div class="section-card">
           <h2>Información básica</h2>
           <div class="field-grid">
@@ -263,7 +283,7 @@
           </div>
         </div>
         <div class="info-banner">
-          Estos datos son fijos en el código del sitio por ahora. Si quieres poder editarlos desde aquí y que se actualicen en la tienda automáticamente, se puede agregar una colección <code>configuracion</code> en Firestore — otra mejora futura opcional.
+          Estos datos son fijos en el código del sitio por ahora. Se puede agregar una colección <code>configuracion</code> en Firestore para editarlos desde aquí — mejora futura opcional.
         </div>
       </div>
 
@@ -271,6 +291,7 @@
   </div>
 </div>
 
+<!-- MODAL PRODUCTO (idéntico al panel anterior) -->
 <div class="modal-overlay" id="modal-overlay">
   <div class="modal">
     <h2 id="modal-title">Nuevo producto</h2>
@@ -298,12 +319,17 @@
 
 <script>
   // 👉 Si el backend cambia de dominio/puerto, actualiza esta línea:
-  const API_URL = "https://receives-ralph-competitive-volt.trycloudflare.com/api/products";
+  const BASE_URL = "https://legislative-erik-paintball-certificate.trycloudflare.com";
+  const API_URL = BASE_URL + "/api/products";
+  const ORDERS_API_URL = BASE_URL + "/api/pedidos";
   const ADMIN_PASSWORD = "admin123456";
 
   let productsCache = [];
+  let ordersCache = [];
   const categoryLabels = { moda: 'Moda', anime: 'Colección Japón', hogar: 'Hogar' };
+  const statusLabels = { pending: 'Pendiente', completed: 'Completado', shipped: 'Enviado', cancelled: 'Cancelado' };
 
+  // ---------- LOGIN (sin cambios) ----------
   function tryLogin(){
     const pass = document.getElementById('login-password').value;
     if(pass === ADMIN_PASSWORD){
@@ -325,7 +351,7 @@
   function showAdmin(){
     document.getElementById('login-screen').style.display = 'none';
     document.getElementById('admin-app').style.display = 'block';
-    loadProducts();
+    syncAll();
   }
 
   if(sessionStorage.getItem('byCocheAdminAuth') === 'ok'){ showAdmin(); }
@@ -334,47 +360,48 @@
     document.querySelectorAll('.nav-item').forEach(el => el.classList.toggle('active', el.dataset.panel === name));
     document.querySelectorAll('.panel').forEach(el => el.classList.remove('active'));
     document.getElementById('panel-' + name).classList.add('active');
+    if(name === 'pedidos') loadOrders();
   }
 
   function formatPriceCRC(n){ return '₡' + Number(n || 0).toLocaleString('es-CR'); }
   function nowTime(){ return new Date().toLocaleTimeString('es-CR', { hour:'2-digit', minute:'2-digit' }); }
+  function formatDate(iso){
+    try{ return new Date(iso).toLocaleDateString('es-CR') + ' ' + new Date(iso).toLocaleTimeString('es-CR', {hour:'2-digit',minute:'2-digit'}); }
+    catch(e){ return iso || '—'; }
+  }
 
+  async function syncAll(){
+    await Promise.all([loadProducts(), loadOrders()]);
+    document.getElementById('last-sync').textContent = nowTime();
+    document.getElementById('sync-state').textContent = 'Sincronizado';
+  }
+
+  // ---------- PRODUCTOS: misma lógica de antes, sin cambios ----------
   async function loadProducts(){
     try{
       const res = await fetch(API_URL);
       if(!res.ok) throw new Error('Respuesta no válida');
       productsCache = await res.json();
-      renderAll();
+      renderProducts();
       document.getElementById('status-dot').textContent = 'Conectado';
       document.getElementById('api-status-text').textContent = 'Conectado a Firebase';
-      document.getElementById('last-sync').textContent = nowTime();
-      document.getElementById('sync-state').textContent = 'Sincronizado';
     }catch(err){
       console.error(err);
       document.getElementById('status-dot').textContent = 'Sin conexión';
       document.getElementById('api-status-text').textContent = 'Sin conexión';
-      document.getElementById('sync-state').textContent = 'Error';
-      document.getElementById('sync-state').style.color = '#B5483D';
       document.getElementById('product-rows').innerHTML = `<tr class="empty-row"><td colspan="6">No se pudo conectar con el backend.</td></tr>`;
       document.getElementById('dashboard-recent-rows').innerHTML = `<tr class="empty-row"><td colspan="5">Sin conexión.</td></tr>`;
     }
   }
 
-  function renderAll(){
+  function renderProducts(){
     document.getElementById('nav-product-count').textContent = productsCache.length;
-
     const totalProducts = productsCache.length;
-    const totalStock = productsCache.reduce((sum,p) => sum + (Number(p.stock) || 0), 0);
-    const inventoryValue = productsCache.reduce((sum,p) => sum + (Number(p.precio) || 0) * (Number(p.stock) || 0), 0);
     const lowStock = productsCache.filter(p => (Number(p.stock) || 0) <= 2).length;
-
     document.getElementById('stat-total-products').textContent = totalProducts;
-    document.getElementById('stat-total-stock').textContent = totalStock;
-    document.getElementById('stat-inventory-value').textContent = formatPriceCRC(inventoryValue);
     document.getElementById('stat-low-stock').textContent = lowStock;
-
     renderProductRows();
-    renderDashboardRows();
+    renderDashboardProductRows();
   }
 
   function renderProductRows(){
@@ -398,7 +425,7 @@
     `).join('');
   }
 
-  function renderDashboardRows(){
+  function renderDashboardProductRows(){
     const rowsEl = document.getElementById('dashboard-recent-rows');
     const recent = productsCache.slice(-5).reverse();
     if(!recent.length){
@@ -488,6 +515,103 @@
     }catch(err){
       console.error(err);
       alert('No se pudo eliminar. Revisa la conexión.');
+    }
+  }
+
+  // ---------- PEDIDOS (nuevo, real) ----------
+  async function loadOrders(){
+    try{
+      const res = await fetch(ORDERS_API_URL);
+      if(!res.ok) throw new Error('Respuesta no válida');
+      ordersCache = await res.json();
+      renderOrders();
+    }catch(err){
+      console.error(err);
+      document.getElementById('order-rows').innerHTML = `<tr class="empty-row"><td colspan="6">No se pudo conectar con el backend de pedidos.</td></tr>`;
+      document.getElementById('dashboard-orders-rows').innerHTML = `<tr class="empty-row"><td colspan="5">Sin conexión.</td></tr>`;
+    }
+  }
+
+  function renderOrders(){
+    document.getElementById('nav-pedidos-count').textContent = ordersCache.length;
+    document.getElementById('stat-total-orders').textContent = ordersCache.length;
+
+    const revenue = ordersCache
+      .filter(o => o.estado === 'completed' || o.estado === 'shipped')
+      .reduce((sum,o) => sum + (Number(o.total) || 0), 0);
+    document.getElementById('stat-revenue').textContent = formatPriceCRC(revenue);
+
+    renderOrderRows();
+    renderDashboardOrderRows();
+  }
+
+  function itemsSummary(items){
+    if(!Array.isArray(items)) return '—';
+    return items.map(i => `${i.nombre} x${i.cantidad}`).join(', ');
+  }
+
+  function statusBadgeClass(estado){
+    return 'status-' + (estado || 'pending');
+  }
+
+  function renderOrderRows(){
+    const rowsEl = document.getElementById('order-rows');
+    if(!ordersCache.length){
+      rowsEl.innerHTML = `<tr class="empty-row"><td colspan="6">Aún no hay pedidos. Aparecerán aquí cuando un cliente compre en la tienda.</td></tr>`;
+      return;
+    }
+    rowsEl.innerHTML = ordersCache.map(o => `
+      <tr>
+        <td>
+          <div class="order-customer">${o.cliente || 'Sin nombre'}</div>
+          <div class="sub">${o.telefono || ''}</div>
+        </td>
+        <td class="order-items">${itemsSummary(o.items)}</td>
+        <td>${formatPriceCRC(o.total)}</td>
+        <td>
+          <select class="status-select" onchange="updateOrderStatus('${o.id}', this.value)">
+            <option value="pending" ${o.estado === 'pending' ? 'selected' : ''}>Pendiente</option>
+            <option value="completed" ${o.estado === 'completed' ? 'selected' : ''}>Completado</option>
+            <option value="shipped" ${o.estado === 'shipped' ? 'selected' : ''}>Enviado</option>
+            <option value="cancelled" ${o.estado === 'cancelled' ? 'selected' : ''}>Cancelado</option>
+          </select>
+        </td>
+        <td>${o.metodoPago || '—'}</td>
+        <td>${formatDate(o.fecha)}</td>
+      </tr>
+    `).join('');
+  }
+
+  function renderDashboardOrderRows(){
+    const rowsEl = document.getElementById('dashboard-orders-rows');
+    const recent = ordersCache.slice(0, 5);
+    if(!recent.length){
+      rowsEl.innerHTML = `<tr class="empty-row"><td colspan="5">Sin pedidos todavía.</td></tr>`;
+      return;
+    }
+    rowsEl.innerHTML = recent.map(o => `
+      <tr>
+        <td>${o.cliente || 'Sin nombre'}</td>
+        <td>${formatPriceCRC(o.total)}</td>
+        <td><span class="status-badge ${statusBadgeClass(o.estado)}">${statusLabels[o.estado] || 'Pendiente'}</span></td>
+        <td>${o.metodoPago || '—'}</td>
+        <td>${formatDate(o.fecha)}</td>
+      </tr>
+    `).join('');
+  }
+
+  async function updateOrderStatus(id, nuevoEstado){
+    try{
+      const res = await fetch(`${ORDERS_API_URL}/${id}`, {
+        method:'PUT',
+        headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({ estado: nuevoEstado })
+      });
+      if(!res.ok) throw new Error('Error al actualizar estado');
+      await loadOrders();
+    }catch(err){
+      console.error(err);
+      alert('No se pudo actualizar el estado del pedido.');
     }
   }
 </script>

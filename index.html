@@ -1009,10 +1009,13 @@
 
   function closeSimple(){
     document.getElementById('simple-modal').classList.remove('active');
-    
+
     // Preparar mensaje de WhatsApp
     if(window.currentOrder){
       const order = window.currentOrder;
+
+      // Guardar el pedido en Firebase de inmediato (no depende de EmailJS)
+      guardarPedidoEnFirebase(order);
       
       const itemsMsg = order.items
         .map(i => `${i.name} x${i.qty} = ₡${(i.price * i.qty).toLocaleString('es-CR')}`)
@@ -1059,8 +1062,9 @@
         console.error("Error al enviar email:", err);
       });
     }
+  }
 
-    // Guardar el pedido en Firebase (colección "pedidos") para el panel admin
+  function guardarPedidoEnFirebase(order){
     fetch(PEDIDOS_API_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -1076,10 +1080,11 @@
         metodoPago: 'SINPE Móvil',
         estado: 'pending'
       })
-    }).then(() => {
-      console.log('Pedido guardado en Firebase');
+    }).then(res => {
+      if(!res.ok) throw new Error('Respuesta no válida del servidor');
+      console.log('✅ Pedido guardado en Firebase');
     }).catch(err => {
-      console.error('No se pudo guardar el pedido en Firebase:', err);
+      console.error('❌ No se pudo guardar el pedido en Firebase:', err);
     });
   }
 

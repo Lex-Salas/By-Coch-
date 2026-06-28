@@ -171,6 +171,7 @@
       <div class="nav-item active" data-panel="dashboard" onclick="switchPanel('dashboard')"><span>📊 Dashboard</span></div>
       <div class="nav-item" data-panel="productos" onclick="switchPanel('productos')"><span>📦 Productos</span><span class="nav-badge" id="nav-product-count">0</span></div>
       <div class="nav-item" data-panel="pedidos" onclick="switchPanel('pedidos')"><span>🛍️ Pedidos</span><span class="nav-badge" id="nav-pedidos-count">0</span></div>
+      <div class="nav-item" data-panel="banner" onclick="switchPanel('banner')"><span>📢 Banner</span></div>
       <div class="nav-item" data-panel="configuracion" onclick="switchPanel('configuracion')"><span>⚙️ Configuración</span></div>
 
       <div class="sidebar-footer">
@@ -260,13 +261,39 @@
         <div class="section-card">
           <table>
             <thead>
-              <tr><th>Cliente</th><th>Productos</th><th>Total</th><th>Estado</th><th>Pago</th><th>Fecha</th></tr>
+              <tr><th>Cliente</th><th>Productos</th><th>Total</th><th>Estado</th><th>Guía / Tracking</th><th>Pago</th><th>Fecha</th></tr>
             </thead>
-            <tbody id="order-rows"><tr class="empty-row"><td colspan="6">Cargando pedidos…</td></tr></tbody>
+            <tbody id="order-rows"><tr class="empty-row"><td colspan="7">Cargando pedidos…</td></tr></tbody>
           </table>
         </div>
         <div class="info-banner">
-          Los pedidos se guardan automáticamente cuando un cliente completa el checkout en la tienda (antes de abrir WhatsApp). Puedes cambiar el estado de cada pedido directamente en la tabla.
+          Los pedidos se guardan automáticamente cuando un cliente completa el checkout en la tienda (antes de abrir WhatsApp). Puedes cambiar el estado de cada pedido y agregar el número de guía directamente en la tabla.
+        </div>
+      </div>
+
+      <!-- BANNER -->
+      <div class="panel" id="panel-banner">
+        <div class="main-header"><h1>Banner Promocional</h1></div>
+        <div class="section-card">
+          <h2>Configurar banner de la tienda</h2>
+          <div class="field-grid">
+            <div class="field" style="grid-column:1/-1;">
+              <label><input type="checkbox" id="banner-activo" style="width:auto; margin-right:8px;">Banner activo (visible en la tienda)</label>
+            </div>
+            <div class="field"><label>Título</label><input type="text" id="banner-titulo" placeholder="¡Black Friday!"></div>
+            <div class="field"><label>Subtítulo / mensaje</label><input type="text" id="banner-subtitulo" placeholder="20% de descuento en toda la tienda"></div>
+            <div class="field"><label>Color de fondo</label><input type="color" id="banner-color-fondo" value="#C97B5F"></div>
+            <div class="field"><label>Color de texto</label><input type="color" id="banner-color-texto" value="#FFFFFF"></div>
+          </div>
+          <div style="margin-top:20px; display:flex; gap:10px; align-items:center;">
+            <button class="btn btn-primary" onclick="saveBanner()">Guardar banner</button>
+            <span class="modal-msg" id="banner-msg"></span>
+          </div>
+        </div>
+        <div class="section-card">
+          <h2>Vista previa</h2>
+          <div id="banner-preview" style="display:none; text-align:center; padding:14px 20px; border-radius:8px; font-weight:600; font-size:14px;"></div>
+          <div id="banner-preview-empty" style="font-size:13px; color:var(--gray);">El banner está desactivado o no tiene contenido todavía.</div>
         </div>
       </div>
 
@@ -322,6 +349,7 @@
   const BASE_URL = "https://legislative-erik-paintball-certificate.trycloudflare.com";
   const API_URL = BASE_URL + "/api/products";
   const ORDERS_API_URL = BASE_URL + "/api/pedidos";
+  const BANNER_API_URL = BASE_URL + "/api/banner";
   const ADMIN_PASSWORD = "admin123456";
 
   let productsCache = [];
@@ -361,6 +389,7 @@
     document.querySelectorAll('.panel').forEach(el => el.classList.remove('active'));
     document.getElementById('panel-' + name).classList.add('active');
     if(name === 'pedidos') loadOrders();
+    if(name === 'banner') loadBanner();
   }
 
   function formatPriceCRC(n){ return '₡' + Number(n || 0).toLocaleString('es-CR'); }
@@ -557,7 +586,7 @@
   function renderOrderRows(){
     const rowsEl = document.getElementById('order-rows');
     if(!ordersCache.length){
-      rowsEl.innerHTML = `<tr class="empty-row"><td colspan="6">Aún no hay pedidos. Aparecerán aquí cuando un cliente compre en la tienda.</td></tr>`;
+      rowsEl.innerHTML = `<tr class="empty-row"><td colspan="7">Aún no hay pedidos. Aparecerán aquí cuando un cliente compre en la tienda.</td></tr>`;
       return;
     }
     rowsEl.innerHTML = ordersCache.map(o => `
@@ -576,10 +605,33 @@
             <option value="cancelled" ${o.estado === 'cancelled' ? 'selected' : ''}>Cancelado</option>
           </select>
         </td>
+        <td>
+          <div style="display:flex; gap:6px;">
+            <input type="text" value="${o.guia || ''}" placeholder="N° de guía" id="guia-${o.id}" style="width:110px; padding:6px 8px; border:1px solid var(--line); border-radius:6px; font-size:12px;">
+            <button class="mini-btn" onclick="saveGuia('${o.id}')">Guardar</button>
+          </div>
+        </td>
         <td>${o.metodoPago || '—'}</td>
         <td>${formatDate(o.fecha)}</td>
       </tr>
     `).join('');
+  }
+
+  async function saveGuia(id){
+    const input = document.getElementById('guia-' + id);
+    const guia = input.value.trim();
+    try{
+      const res = await fetch(`${ORDERS_API_URL}/${id}`, {
+        method:'PUT',
+        headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({ guia })
+      });
+      if(!res.ok) throw new Error('Error al guardar guía');
+      await loadOrders();
+    }catch(err){
+      console.error(err);
+      alert('No se pudo guardar el número de guía.');
+    }
   }
 
   function renderDashboardOrderRows(){
@@ -612,6 +664,73 @@
     }catch(err){
       console.error(err);
       alert('No se pudo actualizar el estado del pedido.');
+    }
+  }
+
+  // ---------- BANNER ----------
+  async function loadBanner(){
+    try{
+      const res = await fetch(BANNER_API_URL);
+      const data = await res.json();
+      document.getElementById('banner-activo').checked = !!data.activo;
+      document.getElementById('banner-titulo').value = data.titulo || '';
+      document.getElementById('banner-subtitulo').value = data.subtitulo || '';
+      document.getElementById('banner-color-fondo').value = data.colorFondo || '#C97B5F';
+      document.getElementById('banner-color-texto').value = data.colorTexto || '#FFFFFF';
+      updateBannerPreview();
+    }catch(err){
+      console.error('No se pudo cargar el banner:', err);
+    }
+  }
+
+  function updateBannerPreview(){
+    const activo = document.getElementById('banner-activo').checked;
+    const titulo = document.getElementById('banner-titulo').value;
+    const subtitulo = document.getElementById('banner-subtitulo').value;
+    const colorFondo = document.getElementById('banner-color-fondo').value;
+    const colorTexto = document.getElementById('banner-color-texto').value;
+    const preview = document.getElementById('banner-preview');
+    const empty = document.getElementById('banner-preview-empty');
+
+    if(activo && (titulo || subtitulo)){
+      preview.style.display = 'block';
+      preview.style.background = colorFondo;
+      preview.style.color = colorTexto;
+      preview.textContent = (titulo ? titulo + ' — ' : '') + subtitulo;
+      empty.style.display = 'none';
+    } else {
+      preview.style.display = 'none';
+      empty.style.display = 'block';
+    }
+  }
+
+  ['banner-activo','banner-titulo','banner-subtitulo','banner-color-fondo','banner-color-texto'].forEach(id => {
+    document.getElementById(id).addEventListener('input', updateBannerPreview);
+  });
+
+  async function saveBanner(){
+    const msgEl = document.getElementById('banner-msg');
+    const payload = {
+      activo: document.getElementById('banner-activo').checked,
+      titulo: document.getElementById('banner-titulo').value.trim(),
+      subtitulo: document.getElementById('banner-subtitulo').value.trim(),
+      colorFondo: document.getElementById('banner-color-fondo').value,
+      colorTexto: document.getElementById('banner-color-texto').value,
+    };
+    try{
+      msgEl.textContent = 'Guardando...'; msgEl.className = 'modal-msg';
+      const res = await fetch(BANNER_API_URL, {
+        method:'PUT',
+        headers:{'Content-Type':'application/json'},
+        body: JSON.stringify(payload)
+      });
+      if(!res.ok) throw new Error('Error al guardar');
+      msgEl.textContent = 'Guardado ✓'; msgEl.className = 'modal-msg ok';
+      updateBannerPreview();
+    }catch(err){
+      console.error(err);
+      msgEl.textContent = 'No se pudo guardar el banner.';
+      msgEl.className = 'modal-msg error';
     }
   }
 </script>

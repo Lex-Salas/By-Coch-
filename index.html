@@ -531,6 +531,11 @@
 </head>
 <body>
 
+<div id="promo-banner" style="display:none; text-align:center; padding:12px 20px; font-size:14px; font-weight:600; position:relative;">
+  <span id="promo-banner-text"></span>
+  <span onclick="cerrarBanner()" style="position:absolute; right:16px; top:50%; transform:translateY(-50%); cursor:pointer; font-size:16px; opacity:0.7;">✕</span>
+</div>
+
 <header class="navbar">
   <div class="logo"><img src="images/logo.PNG" alt="By Coché"></div>
   <nav>
@@ -768,9 +773,22 @@
       <a href="https://wa.me/50661909815">WhatsApp: 6190-9815</a>
       <a href="#moda">Ver catálogo</a>
     </div>
+    <div class="footer-contact">
+      <a href="javascript:void(0)" onclick="openPolicyModal('devoluciones')">Política de Devoluciones</a>
+      <a href="javascript:void(0)" onclick="openPolicyModal('envios')">Política de Envíos</a>
+      <a href="javascript:void(0)" onclick="openPolicyModal('tallas')">Guía de Tallas</a>
+    </div>
   </div>
   <div class="footer-bottom">© 2026 BY COCHÉ — Tus prendas y hogar, con estilo.</div>
 </footer>
+
+<!-- MODAL DE POLÍTICAS -->
+<div class="modal" id="policy-modal">
+  <div class="modal-content" style="max-width:520px; text-align:left; max-height:80vh; overflow-y:auto;">
+    <button class="modal-close" onclick="closePolicyModal()">×</button>
+    <div id="policy-modal-body" style="line-height:1.7; font-size:14px;"></div>
+  </div>
+</div>
 
 <script>
   let cart = [];
@@ -1092,6 +1110,7 @@
   // 👉 Si el backend cambia de dominio/puerto, actualiza esta línea:
   const API_URL = "https://legislative-erik-paintball-certificate.trycloudflare.com/api/products";
   const PEDIDOS_API_URL = "https://legislative-erik-paintball-certificate.trycloudflare.com/api/pedidos";
+  const BANNER_API_URL = "https://legislative-erik-paintball-certificate.trycloudflare.com/api/banner";
 
   function formatPriceCRC(n){
     return '₡' + Number(n || 0).toLocaleString('es-CR');
@@ -1143,6 +1162,84 @@
   }
 
   loadProductsFromAPI();
+
+  // ============ BANNER (promociones / temporada) ============
+  async function cargarBanner(){
+    try{
+      const res = await fetch(BANNER_API_URL);
+      const data = await res.json();
+      if(data.activo && !sessionStorage.getItem('bannerCerrado')){
+        const banner = document.getElementById('promo-banner');
+        const text = document.getElementById('promo-banner-text');
+        text.textContent = (data.titulo ? data.titulo + ' — ' : '') + (data.subtitulo || '');
+        banner.style.background = data.colorFondo || '#C97B5F';
+        banner.style.color = data.colorTexto || '#ffffff';
+        banner.style.display = 'block';
+      }
+    }catch(err){
+      console.error('No se pudo cargar el banner:', err);
+    }
+  }
+
+  function cerrarBanner(){
+    document.getElementById('promo-banner').style.display = 'none';
+    sessionStorage.setItem('bannerCerrado', '1');
+  }
+
+  cargarBanner();
+
+  // ============ MODALES DE POLÍTICAS ============
+  const policyContent = {
+    devoluciones: `
+      <h2 style="margin-top:0;">Política de Devoluciones</h2>
+      <p>En BY COCHÉ queremos que estés totalmente satisfecho con tu compra.</p>
+      <ul>
+        <li>Tienes <strong>7 días</strong> después de recibir tu pedido para solicitar un cambio de talla o devolución.</li>
+        <li>La prenda debe estar <strong>sin uso</strong>, con sus etiquetas originales.</li>
+        <li>Si la talla no era la correcta, te ayudamos a cambiarla por la talla adecuada sin costo adicional (el cliente cubre el envío de regreso).</li>
+        <li>Para iniciar una devolución, escríbenos por WhatsApp al <a href="https://wa.me/50661909815">6190-9815</a> con tu número de pedido y motivo.</li>
+        <li>Los reembolsos (cuando aplican) se procesan vía SINPE Móvil en un plazo de 3-5 días hábiles tras recibir la prenda devuelta.</li>
+      </ul>
+    `,
+    envios: `
+      <h2 style="margin-top:0;">Política de Envíos</h2>
+      <ul>
+        <li><strong>Tiempo de entrega:</strong> 2 a 5 días hábiles dentro del Valle Central; 3 a 7 días hábiles para el resto del país.</li>
+        <li><strong>Costo de envío:</strong> ₡8.000 fijo a nivel nacional.</li>
+        <li>Una vez despachado tu pedido, te compartimos el número de guía para que puedas darle seguimiento.</li>
+        <li>Los pedidos se procesan de lunes a viernes. Compras realizadas en fin de semana se despachan el siguiente día hábil.</li>
+        <li>¿Dudas sobre tu envío? Escríbenos por WhatsApp al <a href="https://wa.me/50661909815">6190-9815</a>.</li>
+      </ul>
+    `,
+    tallas: `
+      <h2 style="margin-top:0;">Guía de Tallas</h2>
+      <p><strong>Camisas, polos y prendas casuales/deportivas</strong></p>
+      <table style="width:100%; border-collapse:collapse; margin-bottom:16px;">
+        <tr style="border-bottom:1px solid #ddd;"><th style="text-align:left; padding:6px 0;">Talla</th><th style="text-align:left;">Pecho (cm)</th><th style="text-align:left;">Largo (cm)</th></tr>
+        <tr style="border-bottom:1px solid #eee;"><td style="padding:6px 0;">S</td><td>88-92</td><td>68</td></tr>
+        <tr style="border-bottom:1px solid #eee;"><td style="padding:6px 0;">M</td><td>96-100</td><td>70</td></tr>
+        <tr style="border-bottom:1px solid #eee;"><td style="padding:6px 0;">L</td><td>104-108</td><td>72</td></tr>
+        <tr style="border-bottom:1px solid #eee;"><td style="padding:6px 0;">XL</td><td>112-116</td><td>74</td></tr>
+      </table>
+      <p><strong>Ropa de cama</strong></p>
+      <table style="width:100%; border-collapse:collapse;">
+        <tr style="border-bottom:1px solid #ddd;"><th style="text-align:left; padding:6px 0;">Tipo</th><th style="text-align:left;">Medida</th></tr>
+        <tr style="border-bottom:1px solid #eee;"><td style="padding:6px 0;">Individual</td><td>105 x 190 cm</td></tr>
+        <tr style="border-bottom:1px solid #eee;"><td style="padding:6px 0;">Matrimonial</td><td>150 x 190 cm</td></tr>
+        <tr style="border-bottom:1px solid #eee;"><td style="padding:6px 0;">Queen</td><td>160 x 200 cm</td></tr>
+        <tr style="border-bottom:1px solid #eee;"><td style="padding:6px 0;">King</td><td>200 x 200 cm</td></tr>
+      </table>
+      <p style="margin-top:14px; font-size:12.5px; opacity:0.7;">¿No estás seguro de tu talla? Escríbenos por WhatsApp y te ayudamos a elegir.</p>
+    `
+  };
+
+  function openPolicyModal(key){
+    document.getElementById('policy-modal-body').innerHTML = policyContent[key] || '';
+    document.getElementById('policy-modal').classList.add('active');
+  }
+  function closePolicyModal(){
+    document.getElementById('policy-modal').classList.remove('active');
+  }
 </script>
 
 </body>

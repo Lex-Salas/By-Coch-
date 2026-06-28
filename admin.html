@@ -287,6 +287,7 @@
           </div>
           <div style="margin-top:20px; display:flex; gap:10px; align-items:center;">
             <button class="btn btn-primary" onclick="saveBanner()">Guardar banner</button>
+            <button class="btn" style="border-color:var(--red); color:var(--red);" onclick="eliminarBanner()">🗑 Eliminar banner</button>
             <span class="modal-msg" id="banner-msg"></span>
           </div>
         </div>
@@ -730,6 +731,32 @@
     }catch(err){
       console.error(err);
       msgEl.textContent = 'No se pudo guardar el banner.';
+      msgEl.className = 'modal-msg error';
+    }
+  }
+
+  async function eliminarBanner(){
+    if(!confirm('¿Eliminar el banner actual? Se borrará el contenido y se desactivará en la tienda.')) return;
+    const msgEl = document.getElementById('banner-msg');
+    const payload = { activo: false, titulo: '', subtitulo: '', colorFondo: '#C97B5F', colorTexto: '#FFFFFF' };
+    try{
+      msgEl.textContent = 'Eliminando...'; msgEl.className = 'modal-msg';
+      const res = await fetch(BANNER_API_URL, {
+        method:'PUT',
+        headers:{'Content-Type':'application/json'},
+        body: JSON.stringify(payload)
+      });
+      if(!res.ok) throw new Error('Error al eliminar');
+      document.getElementById('banner-activo').checked = false;
+      document.getElementById('banner-titulo').value = '';
+      document.getElementById('banner-subtitulo').value = '';
+      document.getElementById('banner-color-fondo').value = '#C97B5F';
+      document.getElementById('banner-color-texto').value = '#FFFFFF';
+      updateBannerPreview();
+      msgEl.textContent = 'Banner eliminado ✓'; msgEl.className = 'modal-msg ok';
+    }catch(err){
+      console.error(err);
+      msgEl.textContent = 'No se pudo eliminar el banner.';
       msgEl.className = 'modal-msg error';
     }
   }
